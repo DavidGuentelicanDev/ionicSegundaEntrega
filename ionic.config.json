@@ -1,0 +1,7 @@
+{
+  "name": "app-entrega-2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
