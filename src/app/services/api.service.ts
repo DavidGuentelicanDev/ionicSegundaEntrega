@@ -33,4 +33,14 @@ export class ApiService {
     return this.http.post(this.URL_DUOC + '/api_duoc/usuario/usuario_almacenar', usuario).pipe();
   }
 
+  //funcion para loguearse
+  login(correo: string, contrasena: string) {
+    let usuario: any = {};
+    usuario.correo = correo;
+    usuario.contrasena = contrasena;
+
+    //api POST
+    return this.http.post(this.URL_DUOC + '/api_duoc/usuario/usuario_login', usuario).pipe();
+  }
+
 }

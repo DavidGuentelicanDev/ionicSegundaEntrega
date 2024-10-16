@@ -5,5 +5,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <ion-button (click)="navegarCrearUsuario()" expand="block" fill="clear" color="dark">Regístrate aquí</ion-button>
+  <ion-item>
+    <ion-input [(ngModel)]="mdl_correo" label="Correo electrónico" labelPlacement="floating" placeholder="correo@duocuc.cl"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" labelPlacement="floating" type="password" placeholder="Ingresa tu contraseña" class="ion-margin-top"></ion-input>
+  </ion-item>
+  <ion-button (click)="login()" expand="block" shape="round" class="ion-margin-top">Ingresar</ion-button>
+  <ion-button (click)="navegarCrearUsuario()" expand="block" fill="clear" color="dark" class="ion-margin-top">Regístrate aquí</ion-button>
 </ion-content>

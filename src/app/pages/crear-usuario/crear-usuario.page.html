@@ -10,22 +10,27 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-item>
-    <ion-input [(ngModel)]="mdl_nombre" label="Nombre"></ion-input>
+    <ion-input [(ngModel)]="mdl_nombre" label="Nombre" labelPlacement="floating" placeholder="Ingresa tu nombre"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input [(ngModel)]="mdl_apellido" label="Apellido"></ion-input>
+    <ion-input [(ngModel)]="mdl_apellido" label="Apellido" labelPlacement="floating" placeholder="Ingresa tu apellido" class="ion-margin-top"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input [(ngModel)]="mdl_carrera" label="Carrera"></ion-input>
+    <ion-select [(ngModel)]="mdl_carrera" label="Carrera" labelPlacement="floating" interface="popover" placeholder="Selecciona tu carrera" class="ion-margin-top">
+      <ion-select-option value="Ingeniería en Informática">Ingeniería en Informática</ion-select-option>
+      <ion-select-option value="Ingeniería en Redes y Telecomunicaciones">Ingeniería en Redes y Telecomunicaciones</ion-select-option>
+      <ion-select-option value="Técnico en Redes y Telecomunicaciones">Técnico en Redes y Telecomunicaciones</ion-select-option>
+      <ion-select-option value="Analista Programador Computacional">Analista Programador Computacional</ion-select-option>
+    </ion-select>
   </ion-item>
   <ion-item>
-    <ion-input [(ngModel)]="mdl_correo" label="Correo"></ion-input>
+    <ion-input [(ngModel)]="mdl_correo" label="Correo" labelPlacement="floating" placeholder="correo@duocuc.cl" class="ion-margin-top"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña"></ion-input>
+    <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" type="password" labelPlacement="floating" placeholder="Ingresa tu contraseña" class="ion-margin-top"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input [(ngModel)]="mdl_confirmarContrasena" label="Confirma tu contraseña"></ion-input>
+    <ion-input [(ngModel)]="mdl_confirmarContrasena" label="Confirmar contraseña" type="password" labelPlacement="floating" placeholder="Confirma tu contraseña" class="ion-margin-top"></ion-input>
   </ion-item>
   <ion-button (click)="crearUsuario()" expand="block" shape="round" class="ion-margin-top">Registrarse</ion-button>
 </ion-content>
