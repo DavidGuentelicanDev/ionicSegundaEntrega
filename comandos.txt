@@ -1,0 +1,37 @@
+1. creación de app
+ionic start app-entrega-2 blank --type=angular
+-NgModules
+
+2. crear páginas
+ionic g page pages/login
+ionic g page pages/crear-usuario
+ionic g page pages/principal
+ionic g page pages/cambiar-contraseña
+-eliminar carpeta home y ruta del app-routing, y dejar login como pagina de inicio
+-borrar archivos spec
+
+3. crear servicios
+ionic g service services/db
+ionic g service services/api
+-borrar archivos spec
+
+*ionic serve, para correr el servidor antes de instalar sqlite
+
+4. instalar el espacio de la db
+npm install cordova-sqlite-storage
+
+5. instalar sqlite
+npm install @awesome-cordova-plugins/sqlite
+
+6. creadas las primeras funciones de db service
+
+7. nativizar
+ionic cap sync
+npm install @capacitor/android
+npx cap add android
+
+8. correr el servidor en un emulador o dispositivo fisico
+ionic cap run android --livereload --external
+
+9. se crea pagina inicio
+ionic g page pages/inicio

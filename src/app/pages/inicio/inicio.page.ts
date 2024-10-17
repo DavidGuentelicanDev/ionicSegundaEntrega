@@ -13,6 +13,10 @@ export class InicioPage implements OnInit {
   constructor(private router: Router, private db: DbService) { }
 
   async ngOnInit() {
+    //para la base de datos local
+    this.db.abrirDB();
+    this.db.crearTablaUsuarioLogueado();
+
     let extras: NavigationExtras = {
       replaceUrl: true
     }
@@ -24,12 +28,12 @@ export class InicioPage implements OnInit {
       //si hay usuario logueado, navega al principal
       setTimeout(() => {
         this.router.navigate(['principal'], extras);
-      }, 3000);
+      }, 2000);
     } else {
       //si no hay usuario logueado, navega al login
       setTimeout(() => {
         this.router.navigate(['login'], extras);
-      }, 3000);
+      }, 2000);
     }
   }
 

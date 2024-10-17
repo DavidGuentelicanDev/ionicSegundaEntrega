@@ -47,24 +47,25 @@ export class LoginPage implements OnInit {
       let respuesta = await lastValueFrom(datos);
       let json_texto = JSON.stringify(respuesta);
       let json = JSON.parse(json_texto);
-      console.log(json);
-
-      //extras
-      let extras: NavigationExtras = {
-        state: {
-          'correo': json.usuario.correo,
-          'nombre': json.usuario.nombre,
-          'apellido': json.usuario.apellido,
-          'carrera': json.usuario.carrera
-        },
-        replaceUrl: true
-      }
+      //console.log('DGZ: ', json);
 
       //validacion
       if (json.status == 'error') {
+        //console.log('DGZ: ' + json.status + json.message);
         this.mostrarToast(json.message, 'danger', 3000);
       } else if (json.status == 'success') {
-        this.mostrarToast('Bienvenido/a ' + json.usuario.nombre + ' ' + json.usuario.apellido, 'success', 2000);
+        //console.log('DGZ: ' + json.status);
+        //extras
+        let extras: NavigationExtras = {
+          state: {
+            'correo': json.usuario.correo,
+            'nombre': json.usuario.nombre,
+            'apellido': json.usuario.apellido,
+            'carrera': json.usuario.carrera
+          },
+          replaceUrl: true
+        }
+        this.mostrarToast('Navegando a la página principal...', 'success', 2000);
         this.router.navigate(['principal'], extras);
       }
     }

@@ -33,14 +33,14 @@ export class PrincipalPage implements OnInit {
       this.nombre = extras?.state['nombre'];
       this.apellido = extras?.state['apellido'];
       this.carrera = extras?.state['carrera'];
-    }
 
-    //para la base de datos local
-    this.db.abrirDB();
-    this.db.crearTablaUsuarioLogueado();
-    this.guardarUsuarioLogueado();
-    this.mostrarUsuarioLogueado();
-    //this.lista_datos = this.db.lista_datos;
+      //para guardar el usuario logueado en la base de datos local
+      this.guardarUsuarioLogueado();
+    } else {
+      //mostrar usuario logueado guardado en db
+      this.mostrarUsuarioLogueado();
+      //this.lista_datos = this.db.lista_datos;
+    }
 
     //iniciar el mostrar sedes
     this.mostrarSedes();
@@ -81,14 +81,21 @@ export class PrincipalPage implements OnInit {
 
   //mostrar usuarios logueados
   async mostrarUsuarioLogueado() {
-    await this.db.mostrarUsuarioLogueado();
+    let usuario = await this.db.mostrarUsuarioLogueado();
+    
+    if (usuario) {
+      this.correo = usuario.correo;
+      this.nombre = usuario.nombre;
+      this.apellido = usuario.apellido;
+      this.carrera = usuario.carrera;
+    }
     //this.lista_datos = this.db.lista_datos;
   }
 
   //funcion para borrar usuario logueado
   async eliminarUsuarioLogueado(correo: string) {
     await this.db.eliminarUsuarioLogueado(correo);
-    this.mostrarUsuarioLogueado();
+    //this.mostrarUsuarioLogueado();
   }
 
   //funcion cerrar sesion

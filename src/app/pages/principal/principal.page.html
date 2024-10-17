@@ -1,11 +1,26 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>ECD</ion-title>
+    <ion-title>Bienvenido/a {{ nombre }} {{ apellido }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="exit-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <ion-button (click)="logout()">Cerrar sesión</ion-button>
+
+  <!--datos del usuario-->
+  <div>
+    <ion-item>
+      <ion-label>Correo electrónico: {{ correo }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Carrera: {{ carrera }}</ion-label>
+    </ion-item>
+  </div>
 
   <!--para ver temporalmente los usuarios logueados-->
   <!--<ion-item *ngFor="let x of lista_datos">
