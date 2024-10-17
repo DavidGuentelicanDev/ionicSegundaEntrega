@@ -43,4 +43,9 @@ export class ApiService {
     return this.http.post(this.URL_DUOC + '/api_duoc/usuario/usuario_login', usuario).pipe();
   }
 
+  //mostrar sedes
+  mostrarSedes() {
+    return this.http.get(this.URL_DUOC + '/api_duoc/usuario/sedes_obtener').pipe();
+  }
+
 }

@@ -42,17 +42,23 @@ export class LoginPage implements OnInit {
     if (this.mdl_correo == '' || this.mdl_contrasena == '') { //validacion campos vacios, texto plano
       this.mostrarToast('Debes indicar un usuario y una contraseña para poder ingresar', 'warning', 3000);
     } else {
-      //extras
-      let extras: NavigationExtras = {
-        replaceUrl: true
-      }
-
       //logueo a traves de la api
       let datos = this.api.login(this.mdl_correo, this.mdl_contrasena);
       let respuesta = await lastValueFrom(datos);
       let json_texto = JSON.stringify(respuesta);
       let json = JSON.parse(json_texto);
       console.log(json);
+
+      //extras
+      let extras: NavigationExtras = {
+        state: {
+          'correo': json.usuario.correo,
+          'nombre': json.usuario.nombre,
+          'apellido': json.usuario.apellido,
+          'carrera': json.usuario.carrera
+        },
+        replaceUrl: true
+      }
 
       //validacion
       if (json.status == 'error') {

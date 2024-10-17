@@ -1,13 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>principal</ion-title>
+    <ion-title>ECD</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">principal</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-button (click)="logout()">Cerrar sesión</ion-button>
+  <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
+    <img [src]="sede.imagen" />
+    <ion-card-header>
+      <ion-card-title>{{ sede.nombre }}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <p>Dirección: {{ sede.direccion }}</p>
+      <p>Horario: {{ sede.horario }}</p>
+      <p>Teléfono: {{ sede.telefono }}</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
