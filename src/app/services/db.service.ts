@@ -12,8 +12,6 @@ export class DbService {
 
   //definir una instancia de la db para poder inicializarla en nulo
   dbInstancia: SQLiteObject | null = null;
-  //lista temporal para poder mostrar los datos guardados y verificar que se guarden
-  //lista_datos: any[] = [];
 
   //inyectar sqlite
   constructor(private sqlite: SQLite) { }
@@ -50,28 +48,12 @@ export class DbService {
 
     //insertar datos
     await this.dbInstancia?.executeSql('INSERT INTO USUARIO_LOGUEADO VALUES(?, ?, ?, ?)', [correo, nombre, apellido, carrera]);
-    console.log('DGZ: USUARIO LOGUEADO GUARDADO OK');
+    console.log('DGZ: USUARIO LOGUEADO ' + correo + ' ' + nombre + ' ' + apellido + ' ' + carrera + ' GUARDADO OK');
   }
 
   //mostrar usuario logueado
   async mostrarUsuarioLogueado() {
     await this.abrirDB();
-    //this.lista_datos = [];
-
-    /*await this.dbInstancia?.executeSql('SELECT CORREO, NOMBRE, APELLIDO, CARRERA FROM USUARIO_LOGUEADO', [])
-    .then((data) => {
-      for (let x = 0; x < data.rows.length; x++) {
-        let objeto: any = {};
-        //obtener columnas
-        objeto.correo = data.rows.item(x).CORREO;
-        objeto.nombre = data.rows.item(x).NOMBRE;
-        objeto.apellido = data.rows.item(x).APELLIDO;
-        objeto.carrera = data.rows.item(x).CARRERA;
-
-        //guardar en la lista
-        //this.lista_datos.push(objeto);
-      }
-    });*/
 
     let data = await this.dbInstancia?.executeSql('SELECT CORREO, NOMBRE, APELLIDO, CARRERA FROM USUARIO_LOGUEADO', []);
 
@@ -91,7 +73,7 @@ export class DbService {
     await this.abrirDB();
 
     await this.dbInstancia?.executeSql('DELETE FROM USUARIO_LOGUEADO WHERE CORREO = ?', [correo]);
-    console.log('DGZ: USUARIO LOGUEADO BORRADO OK');
+    console.log('DGZ: USUARIO LOGUEADO ' + correo + ' BORRADO OK');
   }
 
 }

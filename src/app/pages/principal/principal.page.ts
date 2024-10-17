@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
@@ -18,11 +19,14 @@ export class PrincipalPage implements OnInit {
   nombre: string = '';
   apellido: string = '';
   carrera: string = '';
-  //lista temporal para mostrar los datos del usuario logueado
-  //lista_datos: any[] = [];
 
   //inyectar dependencias
-  constructor(private router: Router, private api: ApiService, private db: DbService) { }
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private db: DbService,
+    private alertControlador: AlertController
+  ) { }
 
   ngOnInit() {
     //extras
@@ -39,7 +43,6 @@ export class PrincipalPage implements OnInit {
     } else {
       //mostrar usuario logueado guardado en db
       this.mostrarUsuarioLogueado();
-      //this.lista_datos = this.db.lista_datos;
     }
 
     //iniciar el mostrar sedes
@@ -71,7 +74,6 @@ export class PrincipalPage implements OnInit {
         this.lista_sedes.push(sede);
       }
     }
-    console.log(this.lista_sedes);
   }
 
   //funcion para guardar usuario logueado en la db
@@ -89,13 +91,16 @@ export class PrincipalPage implements OnInit {
       this.apellido = usuario.apellido;
       this.carrera = usuario.carrera;
     }
-    //this.lista_datos = this.db.lista_datos;
   }
 
   //funcion para borrar usuario logueado
   async eliminarUsuarioLogueado(correo: string) {
     await this.db.eliminarUsuarioLogueado(correo);
-    //this.mostrarUsuarioLogueado();
+  }
+
+  //navegar a cambiar contraseña
+  navegarCambiarContrasena() {
+    this.router.navigate(['cambiar-contrasena']);
   }
 
   //funcion cerrar sesion
@@ -109,6 +114,31 @@ export class PrincipalPage implements OnInit {
     }
     
     this.router.navigate(['login'], extras);
+  }
+
+  //funcion para abrir el mensaje de cerrar sesion
+  async cerrarSesion() {
+    let alert = await this.alertControlador.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('DGZ: Cierre de sesión cancelado');
+          }
+        },
+        {
+          text: 'Cerrar',
+          handler: () => {
+            this.logout();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }

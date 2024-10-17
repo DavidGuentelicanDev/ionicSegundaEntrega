@@ -24,13 +24,11 @@ export class InicioPage implements OnInit {
     //para validar que el usuario este logueado
     let usuario = await this.db.mostrarUsuarioLogueado();
 
-    if (usuario) {
-      //si hay usuario logueado, navega al principal
+    if (usuario) { //si hay usuario logueado, navega al principal
       setTimeout(() => {
         this.router.navigate(['principal'], extras);
       }, 2000);
-    } else {
-      //si no hay usuario logueado, navega al login
+    } else { //si no hay usuario logueado, navega al login
       setTimeout(() => {
         this.router.navigate(['login'], extras);
       }, 2000);

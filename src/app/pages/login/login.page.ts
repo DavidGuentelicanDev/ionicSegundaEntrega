@@ -16,7 +16,11 @@ export class LoginPage implements OnInit {
   mdl_contrasena: string = '';
 
   //inyectar router
-  constructor(private router: Router, private api: ApiService, private toastControlador: ToastController) { }
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private toastControlador: ToastController
+  ) { }
 
   ngOnInit() {
   }
@@ -35,6 +39,8 @@ export class LoginPage implements OnInit {
   //funcion para navegar al crear usuario
   navegarCrearUsuario() {
     this.router.navigate(['crear-usuario']);
+    this.mdl_correo = '';
+    this.mdl_contrasena = '';
   }
 
   //funcion para login
@@ -47,14 +53,14 @@ export class LoginPage implements OnInit {
       let respuesta = await lastValueFrom(datos);
       let json_texto = JSON.stringify(respuesta);
       let json = JSON.parse(json_texto);
-      //console.log('DGZ: ', json);
+      console.log('DGZ: ' + json_texto);
 
       //validacion
       if (json.status == 'error') {
-        //console.log('DGZ: ' + json.status + json.message);
-        this.mostrarToast(json.message, 'danger', 3000);
+        this.mostrarToast(json.message, 'danger', 3000); //mensaje parametrizado en la api
+        this.mdl_correo = '';
+        this.mdl_contrasena = '';
       } else if (json.status == 'success') {
-        //console.log('DGZ: ' + json.status);
         //extras
         let extras: NavigationExtras = {
           state: {
@@ -65,7 +71,8 @@ export class LoginPage implements OnInit {
           },
           replaceUrl: true
         }
-        this.mostrarToast('Navegando a la página principal...', 'success', 2000);
+
+        this.mostrarToast('Navegando a la página principal...', 'success', 2000); //texto plano
         this.router.navigate(['principal'], extras);
       }
     }

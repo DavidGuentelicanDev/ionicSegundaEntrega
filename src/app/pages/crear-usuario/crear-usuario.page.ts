@@ -20,7 +20,11 @@ export class CrearUsuarioPage implements OnInit {
   mdl_confirmarContrasena: string = '';
 
   //inyectar router, api
-  constructor(private router: Router, private api: ApiService, private toastControlador: ToastController) { }
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private toastControlador: ToastController
+  ) { }
 
   ngOnInit() {
   }
@@ -78,15 +82,15 @@ export class CrearUsuarioPage implements OnInit {
       let respuesta = await lastValueFrom(datos);
       let json_texto = JSON.stringify(respuesta);
       let json = JSON.parse(json_texto);
-      console.log(json);
+      console.log('DGZ: ' + json_texto);
 
       if (json.status == 'error') {
-        this.mostrarToast(json.message, 'warning', 3000);
+        this.mostrarToast(json.message, 'warning', 3000); //mensaje parametrizado en la respuesta de la api
         this.mdl_correo = '';
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
       } else {
-        this.mostrarToast(json.message, 'success', 1500);
+        this.mostrarToast(json.message, 'success', 1500); //mensaje parametrizado en la respuesta de la api
         this.router.navigate(['login'], extras);
       }
     }
