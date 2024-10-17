@@ -6,12 +6,21 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-button (click)="logout()">Cerrar sesión</ion-button>
+
+  <!--para ver temporalmente los usuarios logueados-->
+  <ion-item *ngFor="let x of lista_datos">
+    <ion-label>{{ x.correo }}</ion-label>
+    <ion-label>{{ x.nombre }}</ion-label>
+    <ion-label>{{ x.apellido }}</ion-label>
+    <ion-label>{{ x.carrera }}</ion-label>
+  </ion-item>
+
+  <!--card con sedes-->
   <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
     <img [src]="sede.imagen" />
     <ion-card-header>
       <ion-card-title>{{ sede.nombre }}</ion-card-title>
     </ion-card-header>
-  
     <ion-card-content>
       <p>Dirección: {{ sede.direccion }}</p>
       <p>Horario: {{ sede.horario }}</p>

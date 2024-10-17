@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-principal',
@@ -17,13 +18,13 @@ export class PrincipalPage implements OnInit {
   nombre: string = '';
   apellido: string = '';
   carrera: string = '';
+  //lista temporal para mostrar los datos del usuario logueado
+  lista_datos: any[] = [];
 
   //inyectar dependencias
-  constructor(private router: Router, private api: ApiService) { }
+  constructor(private router: Router, private api: ApiService, private db: DbService) { }
 
   ngOnInit() {
-    //iniciar el mostrar sedes
-    this.mostrarSedes();
     //extras
     let extras = this.router.getCurrentNavigation()?.extras;
 
@@ -32,8 +33,17 @@ export class PrincipalPage implements OnInit {
       this.nombre = extras?.state['nombre'];
       this.apellido = extras?.state['apellido'];
       this.carrera = extras?.state['carrera'];
-      console.log(this.correo + ' ' + this.nombre + ' ' + this.apellido + ' ' + this.carrera);
     }
+
+    //para la base de datos local
+    this.db.abrirDB();
+    this.db.crearTablaUsuarioLogueado();
+    this.guardarUsuarioLogueado();
+    this.mostrarUsuarioLogueado();
+    this.lista_datos = this.db.lista_datos;
+
+    //iniciar el mostrar sedes
+    this.mostrarSedes();
   }
 
   //funcion para mostrar sedes
@@ -64,13 +74,34 @@ export class PrincipalPage implements OnInit {
     console.log(this.lista_sedes);
   }
 
+  //funcion para guardar usuario logueado en la db
+  async guardarUsuarioLogueado() {
+    await this.db.guardarUsuarioLogueado(this.correo, this.nombre, this.apellido, this.carrera);
+  }
+
+  //mostrar usuarios logueados
+  async mostrarUsuarioLogueado() {
+    await this.db.mostrarUsuarioLogueado();
+    this.lista_datos = this.db.lista_datos;
+  }
+
+  //funcion para borrar usuario logueado
+  async eliminarUsuarioLogueado(correo: string) {
+    await this.db.eliminarUsuarioLogueado(correo);
+    this.mostrarUsuarioLogueado();
+  }
+
   //funcion cerrar sesion
-  logout() {
+  async logout() {
+    //primero borrar el usuario logueado
+    await this.eliminarUsuarioLogueado(this.correo);
+
+    //extras
     let extras: NavigationExtras = {
       replaceUrl: true
     }
     
-    this.router.navigate(['login'], extras)
+    this.router.navigate(['login'], extras);
   }
 
 }
