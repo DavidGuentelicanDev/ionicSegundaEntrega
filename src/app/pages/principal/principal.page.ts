@@ -19,7 +19,7 @@ export class PrincipalPage implements OnInit {
   apellido: string = '';
   carrera: string = '';
   //lista temporal para mostrar los datos del usuario logueado
-  lista_datos: any[] = [];
+  //lista_datos: any[] = [];
 
   //inyectar dependencias
   constructor(private router: Router, private api: ApiService, private db: DbService) { }
@@ -40,7 +40,7 @@ export class PrincipalPage implements OnInit {
     this.db.crearTablaUsuarioLogueado();
     this.guardarUsuarioLogueado();
     this.mostrarUsuarioLogueado();
-    this.lista_datos = this.db.lista_datos;
+    //this.lista_datos = this.db.lista_datos;
 
     //iniciar el mostrar sedes
     this.mostrarSedes();
@@ -82,7 +82,7 @@ export class PrincipalPage implements OnInit {
   //mostrar usuarios logueados
   async mostrarUsuarioLogueado() {
     await this.db.mostrarUsuarioLogueado();
-    this.lista_datos = this.db.lista_datos;
+    //this.lista_datos = this.db.lista_datos;
   }
 
   //funcion para borrar usuario logueado

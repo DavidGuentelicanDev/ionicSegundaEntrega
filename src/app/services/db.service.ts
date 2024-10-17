@@ -13,7 +13,7 @@ export class DbService {
   //definir una instancia de la db para poder inicializarla en nulo
   dbInstancia: SQLiteObject | null = null;
   //lista temporal para poder mostrar los datos guardados y verificar que se guarden
-  lista_datos: any[] = [];
+  //lista_datos: any[] = [];
 
   //inyectar sqlite
   constructor(private sqlite: SQLite) { }
@@ -56,9 +56,9 @@ export class DbService {
   //mostrar usuario logueado
   async mostrarUsuarioLogueado() {
     await this.abrirDB();
-    this.lista_datos = [];
+    //this.lista_datos = [];
 
-    await this.dbInstancia?.executeSql('SELECT CORREO, NOMBRE, APELLIDO, CARRERA FROM USUARIO_LOGUEADO', [])
+    /*await this.dbInstancia?.executeSql('SELECT CORREO, NOMBRE, APELLIDO, CARRERA FROM USUARIO_LOGUEADO', [])
     .then((data) => {
       for (let x = 0; x < data.rows.length; x++) {
         let objeto: any = {};
@@ -69,9 +69,21 @@ export class DbService {
         objeto.carrera = data.rows.item(x).CARRERA;
 
         //guardar en la lista
-        this.lista_datos.push(objeto);
+        //this.lista_datos.push(objeto);
       }
-    });
+    });*/
+
+    let data = await this.dbInstancia?.executeSql('SELECT CORREO, NOMBRE, APELLIDO, CARRERA FROM USUARIO_LOGUEADO', []);
+
+    if (data?.rows.length > 0) {
+      return {
+        correo: data.rows.item(0).CORREO,
+        nombre: data.rows.item(0).NOMBRE,
+        apellido: data.rows.item(0).APELLIDO,
+        carrera: data.rows.item(0).CARRERA
+      };
+    }
+    return null;
   }
 
   //eliminar usuario logueado

@@ -8,12 +8,12 @@
   <ion-button (click)="logout()">Cerrar sesión</ion-button>
 
   <!--para ver temporalmente los usuarios logueados-->
-  <ion-item *ngFor="let x of lista_datos">
+  <!--<ion-item *ngFor="let x of lista_datos">
     <ion-label>{{ x.correo }}</ion-label>
     <ion-label>{{ x.nombre }}</ion-label>
     <ion-label>{{ x.apellido }}</ion-label>
     <ion-label>{{ x.carrera }}</ion-label>
-  </ion-item>
+  </ion-item>-->
 
   <!--card con sedes-->
   <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
