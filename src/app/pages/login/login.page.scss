@@ -1,0 +1,15 @@
+/* CLASES PARA EL LOGIN */
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%; /* circular */
+    border: 3px solid #ddd; /* borde */
+    object-fit: cover; /* la imagen se adapta a su contenedor */
+}

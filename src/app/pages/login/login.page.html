@@ -1,25 +1,35 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="barra-header">
     <ion-title>ECD</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="background-general">
   <!--spinner de recarga-->
   <div *ngIf="spinnerRecarga" class="spinner-superpuesto">
     <ion-spinner name="crescent"></ion-spinner>
   </div>
 
+  <!--logo centrado sobre el card-->
+  <div class="logo-container ion-margin-top ion-margin-bottom">
+    <img src="assets/images/libros.avif" alt="Logo" class="logo">
+  </div>
+
   <!--formulario login-->
-  <ion-item>
-    <ion-input [(ngModel)]="mdl_correo" label="Correo electrónico" labelPlacement="floating" placeholder="correo@duocuc.cl"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" labelPlacement="floating" type="password" placeholder="Ingresa tu contraseña" class="ion-margin-top"></ion-input>
-  </ion-item>
-  <ion-button (click)="login()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
-    <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
-    <span *ngIf="!spinnerVisible">Ingresar</span>
-  </ion-button>
-  <ion-button (click)="navegarCrearUsuario()" expand="block" fill="clear" class="ion-margin-top">Regístrate aquí</ion-button>
+  <ion-card>
+    <div class="ion-padding">
+      <ion-item class="input" lines="none">
+        <ion-input [(ngModel)]="mdl_correo" label="Correo electrónico" labelPlacement="floating" placeholder="correo@duocuc.cl"></ion-input>
+      </ion-item>
+      <ion-item class="ion-margin-top input" lines="none">
+        <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" labelPlacement="floating" type="password" placeholder="Ingresa tu contraseña"></ion-input>
+      </ion-item>
+      <ion-button (click)="login()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
+        <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
+        <span *ngIf="!spinnerVisible">Ingresar</span>
+      </ion-button>
+      <ion-button (click)="navegarCrearUsuario()" expand="block" fill="clear" class="ion-margin-top">Regístrate aquí</ion-button>
+    </div>
+  </ion-card>
+
 </ion-content>
