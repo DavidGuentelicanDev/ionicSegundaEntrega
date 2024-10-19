@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="barra-header">
     <ion-title>Registro de Usuario</ion-title>
 
     <ion-buttons slot="start">
@@ -8,29 +8,43 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-item>
-    <ion-input [(ngModel)]="mdl_nombre" label="Nombre" labelPlacement="floating" placeholder="Ingresa tu nombre"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input [(ngModel)]="mdl_apellido" label="Apellido" labelPlacement="floating" placeholder="Ingresa tu apellido" class="ion-margin-top"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-select [(ngModel)]="mdl_carrera" label="Carrera" labelPlacement="floating" interface="popover" placeholder="Selecciona tu carrera" class="ion-margin-top">
-      <ion-select-option value="Ingeniería en Informática">Ingeniería en Informática</ion-select-option>
-      <ion-select-option value="Ingeniería en Redes y Telecomunicaciones">Ingeniería en Redes y Telecomunicaciones</ion-select-option>
-      <ion-select-option value="Técnico en Redes y Telecomunicaciones">Técnico en Redes y Telecomunicaciones</ion-select-option>
-      <ion-select-option value="Analista Programador Computacional">Analista Programador Computacional</ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-item>
-    <ion-input [(ngModel)]="mdl_correo" label="Correo" labelPlacement="floating" placeholder="correo@duocuc.cl" class="ion-margin-top"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" type="password" labelPlacement="floating" placeholder="Ingresa tu contraseña" class="ion-margin-top"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input [(ngModel)]="mdl_confirmarContrasena" label="Confirmar contraseña" type="password" labelPlacement="floating" placeholder="Confirma tu contraseña" class="ion-margin-top"></ion-input>
-  </ion-item>
-  <ion-button (click)="crearUsuario()" expand="block" shape="round" class="ion-margin-top">Registrarse</ion-button>
+<ion-content [fullscreen]="true" class="background-general">
+  <!--spinner de recarga-->
+  <div *ngIf="spinnerRecarga" class="spinner-superpuesto">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <!--formulario crear usuario-->
+  <ion-card>
+    <div class="ion-padding">
+      <ion-item class="input" lines="none">
+        <ion-input [(ngModel)]="mdl_nombre" label="Nombre" labelPlacement="floating" placeholder="Ingresa tu nombre"></ion-input>
+      </ion-item>
+      <ion-item class="ion-margin-top input" lines="none">
+        <ion-input [(ngModel)]="mdl_apellido" label="Apellido" labelPlacement="floating" placeholder="Ingresa tu apellido"></ion-input>
+      </ion-item>
+      <ion-item class="ion-margin-top input" lines="none">
+        <ion-select [(ngModel)]="mdl_carrera" label="Carrera" labelPlacement="floating" interface="popover" placeholder="Selecciona tu carrera">
+          <ion-select-option value="Ingeniería en Informática">Ingeniería en Informática</ion-select-option>
+          <ion-select-option value="Ingeniería en Redes y Telecomunicaciones">Ingeniería en Redes y Telecomunicaciones</ion-select-option>
+          <ion-select-option value="Técnico en Redes y Telecomunicaciones">Técnico en Redes y Telecomunicaciones</ion-select-option>
+          <ion-select-option value="Analista Programador Computacional">Analista Programador Computacional</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item class="ion-margin-top input" lines="none">
+        <ion-input [(ngModel)]="mdl_correo" label="Correo" labelPlacement="floating" placeholder="correo@duocuc.cl"></ion-input>
+      </ion-item>
+      <ion-item class="ion-margin-top input" lines="none">
+        <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" type="password" labelPlacement="floating" placeholder="Ingresa tu contraseña"></ion-input>
+      </ion-item>
+      <ion-item class="ion-margin-top input" lines="none">
+        <ion-input [(ngModel)]="mdl_confirmarContrasena" label="Confirmar contraseña" type="password" labelPlacement="floating" placeholder="Confirma tu contraseña"></ion-input>
+      </ion-item>
+      <ion-button (click)="crearUsuario()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
+        <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
+        <span *ngIf="!spinnerVisible">Registrarse</span>
+      </ion-button>
+    </div>
+  </ion-card>
+
 </ion-content>

@@ -1,4 +1,5 @@
-//mi idea es que la base de datos solo se abra en el principal y traer los datos del login correcto como extras
+//mi idea es que la base de datos solo se abra en el inicio y traer los datos
+//del login correcto como extras para guardarlos en la db y luego validar en el inicio si existe o no
 
 import { Injectable } from '@angular/core';
 
@@ -74,7 +75,7 @@ export class DbService {
           carrera: data.rows.item(0).CARRERA
         };
       }
-    return null;
+      return null;
     } catch (e) {
       console.log('DGZ: ' + JSON.stringify(e));
       return null;

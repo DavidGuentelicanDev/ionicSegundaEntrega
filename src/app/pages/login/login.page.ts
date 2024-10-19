@@ -62,12 +62,11 @@ export class LoginPage implements OnInit {
       //logueo a traves de la api
       let datos = this.api.login(this.mdl_correo, this.mdl_contrasena);
       let respuesta = await lastValueFrom(datos);
+      let json_texto = JSON.stringify(respuesta);
+      let json = JSON.parse(json_texto);
+      console.log('DGZ: ' + json_texto);
 
       setTimeout(() => {
-        let json_texto = JSON.stringify(respuesta);
-        let json = JSON.parse(json_texto);
-        console.log('DGZ: ' + json_texto);
-
         //validacion
         if (json.status == 'error') {
           this.mostrarToast(json.message, 'danger', 3000); //mensaje parametrizado en la api

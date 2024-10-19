@@ -18,6 +18,12 @@ export class CrearUsuarioPage implements OnInit {
   mdl_apellido: string = '';
   mdl_carrera: string = '';
   mdl_confirmarContrasena: string = '';
+  //spinner boton
+  spinnerVisible: boolean = false;
+  //boton de registro deshabilitado
+  botonDeshabilitado: boolean = false;
+  //spinner de recarga
+  spinnerRecarga: boolean = false;
 
   //inyectar router, api
   constructor(
@@ -27,6 +33,12 @@ export class CrearUsuarioPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    //spinner de recarga al iniciar la pagina crear usuario
+    this.spinnerRecarga = true;
+
+    setTimeout(() => {
+      this.spinnerRecarga = false;
+    }, 1000);
   }
   
   //funcion del toast
@@ -42,6 +54,9 @@ export class CrearUsuarioPage implements OnInit {
 
   //funcion para crear o registrar un usuario
   async crearUsuario() {
+    this.spinnerVisible = true;
+    this.botonDeshabilitado = true;
+
     //extras
     let extras: NavigationExtras = {
       replaceUrl: true
@@ -53,13 +68,17 @@ export class CrearUsuarioPage implements OnInit {
       setTimeout(() => {
         this.mostrarToast('Todos los campos son obligatorios', 'warning', 3000);
         this.mdl_contrasena = '';
-      }, 1000); //carga de 1 segundo antes de arrojar el toast
+        this.botonDeshabilitado = false;
+        this.spinnerVisible = false;
+      }, 1000);
     } else if (!correoRegex.test(this.mdl_correo)) { //valida que correo tenga formato correo, mensaje plano
       setTimeout(() => {
         this.mostrarToast('Debes ingresar un formato válido de correo electrónico', 'warning', 3000);
         this.mdl_correo = '';
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
+        this.botonDeshabilitado = false;
+        this.spinnerVisible = false;
       }, 1000); //carga de 1 segundo antes de arrojar el toast
     } else if (!this.mdl_correo.endsWith('duocuc.cl')) { //valida que el correo tenga dominio @duocuc.cl, mensaje plano
       setTimeout(() => {
@@ -67,18 +86,24 @@ export class CrearUsuarioPage implements OnInit {
         this.mdl_correo = '';
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
+        this.botonDeshabilitado = false;
+        this.spinnerVisible = false;
       }, 1000); //carga de 1 segundo antes de arrojar el toast
     } else if (this.mdl_contrasena.length < 3) { //validar que contraseña tenga un largo minimo de n, mensaje plano
       setTimeout(() => {
         this.mostrarToast('La contraseña debe tener una extensión mínima de 3 caracteres', 'warning', 3000);
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
+        this.botonDeshabilitado = false;
+        this.spinnerVisible = false;
       }, 1000); //carga de 1 segundo antes de arrojar el toast
     } else if (this.mdl_contrasena != this.mdl_confirmarContrasena) { //valida que contraseña y confirmar contraseña sean distintas, envia mensaje plano
       setTimeout(() => {
         this.mostrarToast('Las contraseñas no coinciden', 'warning', 3000);
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
+        this.botonDeshabilitado = false;
+        this.spinnerVisible = false;
       }, 1000); //carga de 1 segundo antes de arrojar el toast
     } else if (this.mdl_contrasena == this.mdl_confirmarContrasena) { //si contraseña y confirmar contraseña son iguales, sigue el proceso de la api
       //creacion de usuario a traves de la api
@@ -90,23 +115,28 @@ export class CrearUsuarioPage implements OnInit {
         this.mdl_carrera
       );
       let respuesta = await lastValueFrom(datos);
-      setTimeout(() => {
-        let json_texto = JSON.stringify(respuesta);
-        let json = JSON.parse(json_texto);
-        console.log('DGZ: ' + json_texto);
+      let json_texto = JSON.stringify(respuesta);
+      let json = JSON.parse(json_texto);
+      console.log('DGZ: ' + json_texto);
 
+      setTimeout(() => {
         if (json.status == 'error') {
           this.mostrarToast(json.message, 'warning', 3000); //mensaje parametrizado en la respuesta de la api
           this.mdl_correo = '';
           this.mdl_contrasena = '';
           this.mdl_confirmarContrasena = '';
+          this.botonDeshabilitado = false;
         } else {
           this.mostrarToast(json.message, 'success', 1500); //mensaje parametrizado en la respuesta de la api
-          
+          this.spinnerRecarga = true;
+
           setTimeout(() => {
             this.router.navigate(['login'], extras);
+            this.spinnerRecarga = false;
           }, 2000);
         }
+
+        this.spinnerVisible = false;
       }, 1000); //carga de 1 segundo antes de arrojar el toast
     }
   }
