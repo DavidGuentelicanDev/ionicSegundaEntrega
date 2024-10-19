@@ -18,11 +18,15 @@ export class DbService {
 
   //abrir la instancia de db
   async abrirDB() {
-    this.dbInstancia = await this.sqlite.create({
-      name: 'datos.db',
-      location: 'default'
-    });
-    console.log('DGZ: BASE DE DATOS OK');
+    try {
+      this.dbInstancia = await this.sqlite.create({
+        name: 'datos.db',
+        location: 'default'
+      });
+      console.log('DGZ: BASE DE DATOS OK');
+    } catch (e) {
+      console.log('DGZ - PROBLEMA AL INICIAR LA BASE DE DATOS: ' + JSON.stringify(e));
+    }
   }
 
   //crear tabla usuario logueado
@@ -47,33 +51,46 @@ export class DbService {
     await this.abrirDB();
 
     //insertar datos
-    await this.dbInstancia?.executeSql('INSERT INTO USUARIO_LOGUEADO VALUES(?, ?, ?, ?)', [correo, nombre, apellido, carrera]);
-    console.log('DGZ: USUARIO LOGUEADO ' + correo + ' ' + nombre + ' ' + apellido + ' ' + carrera + ' GUARDADO OK');
+    try {
+      await this.dbInstancia?.executeSql('INSERT INTO USUARIO_LOGUEADO VALUES(?, ?, ?, ?)', [correo, nombre, apellido, carrera]);
+      console.log('DGZ: USUARIO LOGUEADO [correo: ' + correo + ', nombre: ' + nombre + ', apellido: ' + apellido + ', carrera: ' + carrera + '] GUARDADO OK');
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+    }
   }
 
   //mostrar usuario logueado
   async mostrarUsuarioLogueado() {
     await this.abrirDB();
 
-    let data = await this.dbInstancia?.executeSql('SELECT CORREO, NOMBRE, APELLIDO, CARRERA FROM USUARIO_LOGUEADO', []);
+    try {
+      let data = await this.dbInstancia?.executeSql('SELECT CORREO, NOMBRE, APELLIDO, CARRERA FROM USUARIO_LOGUEADO', []);
 
-    if (data?.rows.length > 0) {
-      return {
-        correo: data.rows.item(0).CORREO,
-        nombre: data.rows.item(0).NOMBRE,
-        apellido: data.rows.item(0).APELLIDO,
-        carrera: data.rows.item(0).CARRERA
-      };
-    }
+      if (data?.rows.length > 0) {
+        return {
+          correo: data.rows.item(0).CORREO,
+          nombre: data.rows.item(0).NOMBRE,
+          apellido: data.rows.item(0).APELLIDO,
+          carrera: data.rows.item(0).CARRERA
+        };
+      }
     return null;
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+      return null;
+    }
   }
 
   //eliminar usuario logueado
   async eliminarUsuarioLogueado(correo: string) {
     await this.abrirDB();
 
-    await this.dbInstancia?.executeSql('DELETE FROM USUARIO_LOGUEADO WHERE CORREO = ?', [correo]);
-    console.log('DGZ: USUARIO LOGUEADO ' + correo + ' BORRADO OK');
+    try {
+      await this.dbInstancia?.executeSql('DELETE FROM USUARIO_LOGUEADO WHERE CORREO = ?', [correo]);
+      console.log('DGZ: USUARIO LOGUEADO ' + correo + ' BORRADO OK');
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+    }
   }
 
 }

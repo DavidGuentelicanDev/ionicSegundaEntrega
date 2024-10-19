@@ -78,7 +78,12 @@ export class PrincipalPage implements OnInit {
 
   //funcion para guardar usuario logueado en la db
   async guardarUsuarioLogueado() {
-    await this.db.guardarUsuarioLogueado(this.correo, this.nombre, this.apellido, this.carrera);
+    await this.db.guardarUsuarioLogueado(
+      this.correo,
+      this.nombre,
+      this.apellido,
+      this.carrera
+    );
   }
 
   //mostrar usuarios logueados

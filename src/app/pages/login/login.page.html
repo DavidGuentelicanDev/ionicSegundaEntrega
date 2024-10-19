@@ -11,6 +11,9 @@
   <ion-item>
     <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" labelPlacement="floating" type="password" placeholder="Ingresa tu contraseña" class="ion-margin-top"></ion-input>
   </ion-item>
-  <ion-button (click)="login()" expand="block" shape="round" class="ion-margin-top">Ingresar</ion-button>
-  <ion-button (click)="navegarCrearUsuario()" expand="block" fill="clear" color="dark" class="ion-margin-top">Regístrate aquí</ion-button>
+  <ion-button (click)="login()" expand="block" shape="round" color="tertiary" class="ion-margin-top">
+    <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
+    <span *ngIf="!spinnerVisible">Ingresar</span>
+  </ion-button>
+  <ion-button (click)="navegarCrearUsuario()" expand="block" fill="clear" class="ion-margin-top">Regístrate aquí</ion-button>
 </ion-content>
