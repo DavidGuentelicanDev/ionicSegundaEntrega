@@ -5,13 +5,19 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  <!--spinner de recarga-->
+  <div *ngIf="spinnerRecarga" class="spinner-superpuesto">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <!--formulario login-->
   <ion-item>
     <ion-input [(ngModel)]="mdl_correo" label="Correo electrónico" labelPlacement="floating" placeholder="correo@duocuc.cl"></ion-input>
   </ion-item>
   <ion-item>
     <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" labelPlacement="floating" type="password" placeholder="Ingresa tu contraseña" class="ion-margin-top"></ion-input>
   </ion-item>
-  <ion-button (click)="login()" expand="block" shape="round" color="tertiary" class="ion-margin-top">
+  <ion-button (click)="login()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
     <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
     <span *ngIf="!spinnerVisible">Ingresar</span>
   </ion-button>

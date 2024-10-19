@@ -16,6 +16,10 @@ export class LoginPage implements OnInit {
   mdl_contrasena: string = '';
   //spinner boton
   spinnerVisible: boolean = false;
+  //boton de inicio deshabilitado
+  botonDeshabilitado: boolean = false;
+  //spinner de recarga
+  spinnerRecarga: boolean = false;
 
   //inyectar router
   constructor(
@@ -40,20 +44,20 @@ export class LoginPage implements OnInit {
 
   //funcion para navegar al crear usuario
   navegarCrearUsuario() {
-    setTimeout(() => {
       this.router.navigate(['crear-usuario']);
       this.mdl_correo = '';
       this.mdl_contrasena = '';
-    }, 300); //0,3 segundos para viajar
   }
 
   //funcion para login
   async login() {
     this.spinnerVisible = true;
+    this.botonDeshabilitado = true;
 
     if (this.mdl_correo == '' || this.mdl_contrasena == '') { //validacion campos vacios, texto plano
       this.mostrarToast('Debes indicar un usuario y una contraseña para poder ingresar', 'warning', 3000);
       this.spinnerVisible = false;
+      this.botonDeshabilitado = false;
     } else {
       //logueo a traves de la api
       let datos = this.api.login(this.mdl_correo, this.mdl_contrasena);
@@ -69,6 +73,7 @@ export class LoginPage implements OnInit {
           this.mostrarToast(json.message, 'danger', 3000); //mensaje parametrizado en la api
           this.mdl_correo = '';
           this.mdl_contrasena = '';
+          this.botonDeshabilitado = false;
         } else if (json.status == 'success') {
           //extras
           let extras: NavigationExtras = {
@@ -82,9 +87,11 @@ export class LoginPage implements OnInit {
           }
 
           this.mostrarToast('Navegando a la página principal...', 'success', 2000); //texto plano
+          this.spinnerRecarga = true; //carga un spinner que ocupa toda la pantalla mientras navega al principal
 
           setTimeout(() => {
             this.router.navigate(['principal'], extras);
+            this.spinnerRecarga = false;
           }, 2000);
         }
 
