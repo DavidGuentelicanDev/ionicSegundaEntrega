@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="barra-header">
     <ion-title>ECD Asistencia</ion-title>
 
     <ion-buttons slot="end">
@@ -13,37 +13,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="background-general">
+  <!--spinner de recarga-->
+  <div *ngIf="spinnerRecarga" class="spinner-superpuesto">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
 
-  <!--card con datos de usuario-->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Bienvenido/a {{ nombre }} {{ apellido }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>Correo electrónico: {{ correo }}</p>
-      <p>Carrera: {{ carrera }}</p>
-    </ion-card-content>
-  </ion-card>
+  <!--contenedor para los cards-->
+  <div class="ion-padding">
+    <!--card con datos de usuario-->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Bienvenido/a {{ nombre }} {{ apellido }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Correo electrónico: {{ correo }}</p>
+        <p>Carrera: {{ carrera }}</p>
+      </ion-card-content>
+    </ion-card>
 
-  <!--para ver temporalmente los usuarios logueados-->
-  <!--<ion-item *ngFor="let x of lista_datos">
-    <ion-label>{{ x.correo }}</ion-label>
-    <ion-label>{{ x.nombre }}</ion-label>
-    <ion-label>{{ x.apellido }}</ion-label>
-    <ion-label>{{ x.carrera }}</ion-label>
-  </ion-item>-->
+    <!--card con sedes-->
+    <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
+      <img [src]="sede.imagen" />
+      <ion-card-header>
+        <ion-card-title>{{ sede.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Dirección: {{ sede.direccion }}</p>
+        <p>Horario: {{ sede.horario }}</p>
+        <p>Teléfono: {{ sede.telefono }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
-  <!--card con sedes-->
-  <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
-    <img [src]="sede.imagen" />
-    <ion-card-header>
-      <ion-card-title>{{ sede.nombre }}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p>Dirección: {{ sede.direccion }}</p>
-      <p>Horario: {{ sede.horario }}</p>
-      <p>Teléfono: {{ sede.telefono }}</p>
-    </ion-card-content>
-  </ion-card>
 </ion-content>

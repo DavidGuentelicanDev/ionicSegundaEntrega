@@ -19,6 +19,8 @@ export class PrincipalPage implements OnInit {
   nombre: string = '';
   apellido: string = '';
   carrera: string = '';
+  //spinner de recarga
+  spinnerRecarga: boolean = false;
 
   //inyectar dependencias
   constructor(
@@ -29,24 +31,31 @@ export class PrincipalPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    //spinner de recarga al iniciar la pagina crear usuario
+    this.spinnerRecarga = true;
+
     //extras
     let extras = this.router.getCurrentNavigation()?.extras;
 
-    if (extras?.state) {
-      this.correo = extras?.state['correo'];
-      this.nombre = extras?.state['nombre'];
-      this.apellido = extras?.state['apellido'];
-      this.carrera = extras?.state['carrera'];
+    setTimeout(() => {
+      if (extras?.state) {
+        this.correo = extras?.state['correo'];
+        this.nombre = extras?.state['nombre'];
+        this.apellido = extras?.state['apellido'];
+        this.carrera = extras?.state['carrera'];
+  
+        //para guardar el usuario logueado en la base de datos local
+        this.guardarUsuarioLogueado();
+      } else {
+        //mostrar usuario logueado guardado en db
+        this.mostrarUsuarioLogueado();
+      }
 
-      //para guardar el usuario logueado en la base de datos local
-      this.guardarUsuarioLogueado();
-    } else {
-      //mostrar usuario logueado guardado en db
-      this.mostrarUsuarioLogueado();
-    }
+      //iniciar el mostrar sedes
+      this.mostrarSedes();
 
-    //iniciar el mostrar sedes
-    this.mostrarSedes();
+      this.spinnerRecarga = false;
+    }, 1000);
   }
 
   //funcion para mostrar sedes
