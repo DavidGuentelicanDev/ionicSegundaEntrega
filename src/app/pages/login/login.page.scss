@@ -13,3 +13,11 @@
     border: 3px solid #ddd; /* borde */
     object-fit: cover; /* la imagen se adapta a su contenedor */
 }
+
+/* Centrar titulo */
+.titulo-login {
+    text-align: center; /* centra el texto */
+    font-size: 2rem; /* tamaño del titulo */
+    font-weight: bold; /* negrita */
+    margin-bottom: 10px; /* espacio entre el titulo y el formulario */
+}
