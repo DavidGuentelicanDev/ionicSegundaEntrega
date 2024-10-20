@@ -32,18 +32,37 @@
       </ion-card-content>
     </ion-card>
 
+    <!--mostrar skeletons si esta cargando -->
+    <ng-container *ngIf="skeletonsCargando">
+      <ion-card *ngFor="let s of skeletons" class="ion-margin-top skeleton-card">
+        <div class="skeleton-image"></div>
+        <ion-card-header>
+          <ion-card-title>
+            <div class="skeleton-text"></div>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text"></div>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
     <!--card con sedes-->
-    <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
-      <img [src]="sede.imagen" />
-      <ion-card-header>
-        <ion-card-title>{{ sede.nombre }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Dirección: {{ sede.direccion }}</p>
-        <p>Horario: {{ sede.horario }}</p>
-        <p>Teléfono: {{ sede.telefono }}</p>
-      </ion-card-content>
-    </ion-card>
+    <ng-container *ngIf="!skeletonsCargando">
+      <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
+        <img [src]="sede.imagen" />
+        <ion-card-header>
+          <ion-card-title>{{ sede.nombre }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Dirección: {{ sede.direccion }}</p>
+          <p>Horario: {{ sede.horario }}</p>
+          <p>Teléfono: {{ sede.telefono }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
   </div>
 
 </ion-content>

@@ -14,6 +14,9 @@ export class PrincipalPage implements OnInit {
 
   //lista para las sedes
   lista_sedes: any[] = [];
+  //skeletons
+  skeletons = Array(3);
+  skeletonsCargando: boolean = true; 
   //variables para recibir extras
   correo: string = '';
   nombre: string = '';
@@ -33,6 +36,7 @@ export class PrincipalPage implements OnInit {
   ngOnInit() {
     //spinner de recarga al iniciar la pagina crear usuario
     this.spinnerRecarga = true;
+    this.skeletonsCargando = false;
 
     //extras
     let extras = this.router.getCurrentNavigation()?.extras;
@@ -44,18 +48,21 @@ export class PrincipalPage implements OnInit {
         this.apellido = extras?.state['apellido'];
         this.carrera = extras?.state['carrera'];
   
-        //para guardar el usuario logueado en la base de datos local
-        this.guardarUsuarioLogueado();
+        this.guardarUsuarioLogueado(); //para guardar el usuario logueado en la base de datos local
       } else {
-        //mostrar usuario logueado guardado en db
-        this.mostrarUsuarioLogueado();
+        this.mostrarUsuarioLogueado(); //mostrar usuario logueado guardado en db
       }
 
-      //iniciar el mostrar sedes
-      this.mostrarSedes();
-
+      //desactivar spinner de carga y activar skeletons
       this.spinnerRecarga = false;
-    }, 1000);
+      this.skeletonsCargando = true;
+
+      setTimeout(() => {
+        //mostrar sedes y desactivar skeletons despues de 1 segundo
+        this.mostrarSedes();
+        this.skeletonsCargando = false;
+      }, 1000); //mantener skeletons 1 seg.
+    }, 1000); //mantener spinner cargando 1 seg.
   }
 
   //funcion para mostrar sedes
