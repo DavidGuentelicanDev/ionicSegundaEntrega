@@ -1,10 +1,25 @@
 /* CLASES PARA EL INICIO */
 
+.contenedor {
+    display: flex;
+    flex-direction: column; /* coloca el titulo arriba y el logo abajo */
+    justify-content: center; /* centra verticalmente */
+    align-items: center; /* centra horizontalmente */
+    height: 100vh; /* ocupa toda la altura de la pantalla */
+}
+
+.titulo {
+    text-align: center; /* centrado */
+    font-size: 3rem; /* tamaño grande */
+    font-weight: bold; /* negrita */
+    color: #f1f1f1;
+    margin-bottom: 20px; /* espacio entre el titulo y el logo */
+}
+
 .logo-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
 }
 
 .logo {
