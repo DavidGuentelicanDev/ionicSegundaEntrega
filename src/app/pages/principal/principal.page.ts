@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
@@ -30,7 +30,8 @@ export class PrincipalPage implements OnInit {
     private router: Router,
     private api: ApiService,
     private db: DbService,
-    private alertControlador: AlertController
+    private alertControlador: AlertController,
+    private toastControlador: ToastController
   ) { }
 
   async ngOnInit() {
@@ -49,6 +50,19 @@ export class PrincipalPage implements OnInit {
     setTimeout(async () => {
       this.skeletonsCargando = false;
     }, 2500); //mantener skeletons 1 seg.
+  }
+
+  //funcion del toast
+  async mostrarToast(mensaje: string, color: string, duracion: number) {
+    let toast = await this.toastControlador.create({
+      message: mensaje,
+      color: color,
+      duration: duracion,
+      position: 'bottom',
+      mode: 'md', //diseño de material design
+      cssClass: 'toast' //clase del global.scss
+    });
+    toast.present();
   }
 
   //funcion para mostrar sedes
@@ -106,6 +120,7 @@ export class PrincipalPage implements OnInit {
 
   //funcion cerrar sesion
   async logout() {
+    this.spinnerRecarga = true;
     //primero borrar el usuario logueado
     await this.eliminarUsuarioLogueado(this.correo);
 
@@ -113,8 +128,13 @@ export class PrincipalPage implements OnInit {
     let extras: NavigationExtras = {
       replaceUrl: true
     }
-    
-    this.router.navigate(['login'], extras);
+
+    this.mostrarToast('Cerrando sesión', 'tertiary', 1500);
+
+    setTimeout(() => {
+      this.spinnerRecarga = false;
+      this.router.navigate(['login'], extras);
+    }, 2000);
   }
 
   //funcion para abrir el mensaje de cerrar sesion
