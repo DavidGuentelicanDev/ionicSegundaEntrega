@@ -146,7 +146,7 @@ export class PrincipalPage implements OnInit {
   async reiniciar() {
     let alert = await this.alertControlador.create({
       header: 'Reiniciar aplicación',
-      message: 'Para aplicar el cambio de contraseña, es necesario reiniciar la aplicación. ¿Deseas cerrar sesión ahora?',
+      message: 'Para aplicar el cambio de contraseña, es necesario reiniciar la aplicación',
       backdropDismiss: false, //evita que el alert se cierre al presionar fuera
       buttons: [
         {

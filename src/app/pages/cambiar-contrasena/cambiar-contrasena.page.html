@@ -1,10 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar class="barra-header">
     <ion-title>Cambio de Contraseña</ion-title>
-
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -14,9 +10,20 @@
     <ion-spinner name="crescent"></ion-spinner>
   </div>
 
-  <ion-button (click)="cambiarContrasena()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
-    <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
-    <span *ngIf="!spinnerVisible">Cambiar contraseña</span>
-  </ion-button>
+  <!--formulario cambiar contraseña-->
+  <ion-card class="ion-margin-top">
+    <div class="ion-padding">
+      <ion-item class="input" lines="none">
+        <ion-input [(ngModel)]="mdl_contrasenaNueva" label="Nueva contraseña" labelPlacement="floating" type="password" placeholder="Ingresa tu nueva contraseña"></ion-input>
+      </ion-item>
+      <ion-item class="ion-margin-top input" lines="none">
+        <ion-input [(ngModel)]="mdl_confirmarContrasenaNueva" label="Confirmar nueva contraseña" labelPlacement="floating" type="password" placeholder="Confirma tu nueva contraseña"></ion-input>
+      </ion-item>
+      <ion-button (click)="cambiarContrasena()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
+        <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
+        <span *ngIf="!spinnerVisible">Cambiar contraseña</span>
+      </ion-button>
+    </div>
+  </ion-card>
 
 </ion-content>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -9,8 +10,8 @@ import { NavigationExtras, Router } from '@angular/router';
 export class CambiarContrasenaPage implements OnInit {
 
   //modelos para el cambio de contraseña
-  mdl_contrasena: string = '';
-  mdl_cambiarContrasena: string = '';
+  mdl_contrasenaNueva: string = '';
+  mdl_confirmarContrasenaNueva: string = '';
   //correo
   correo: string = '';
   //spinner de recarga
@@ -21,10 +22,22 @@ export class CambiarContrasenaPage implements OnInit {
   botonDeshabilitado: boolean = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private toastControlador: ToastController
   ) { }
 
   ngOnInit() {}
+
+  //funcion del toast
+  async mostrarToast(mensaje: string, color: string, duracion: number) {
+    let toast = await this.toastControlador.create({
+      message: mensaje,
+      color: color,
+      duration: duracion,
+      position: 'bottom'
+    });
+    toast.present();
+  }
 
   //funcion para cambiar contraseña
   async cambiarContrasena() {
@@ -33,6 +46,8 @@ export class CambiarContrasenaPage implements OnInit {
 
     setTimeout(() => {
       this.spinnerRecarga = true;
+
+      this.mostrarToast('Cambio de contraseña correcto, redirigiendo a la pantalla principal...', 'success', 1500);
 
       //redirigir al principal
       let extras: NavigationExtras = {
