@@ -21,6 +21,11 @@ export class LoginPage implements OnInit {
   botonDeshabilitado: boolean = false;
   //spinner de recarga
   spinnerRecarga: boolean = false;
+  //variables para guardar usuario
+  db_correo: string = '';
+  db_nombre: string = '';
+  db_apellido: string = '';
+  db_carrera: string = '';
 
   //inyectar dependencias
   constructor(
@@ -51,6 +56,16 @@ export class LoginPage implements OnInit {
       this.mdl_contrasena = '';
   }
 
+  //funcion para guardar el usuario logueado
+  async guardarUsuarioLogueado() {
+    await this.db.guardarUsuarioLogueado(
+      this.db_correo,
+      this.db_nombre,
+      this.db_apellido,
+      this.db_carrera
+    );
+  }
+
   //funcion para login
   async login() {
     this.spinnerVisible = true;
@@ -77,12 +92,12 @@ export class LoginPage implements OnInit {
           this.botonDeshabilitado = false;
         } else if (json.status == 'success') {
           //guardando usuario que se loguea
-          await this.db.guardarUsuarioLogueado(
-            json.usuario.correo,
-            json.usuario.nombre,
-            json.usuario.apellido,
-            json.usuario.carrera
-          );
+          this.db_correo = json.usuario.correo;
+          this.db_nombre = json.usuario.nombre;
+          this.db_apellido = json.usuario.apellido;
+          this.db_carrera = json.usuario.carrera;
+
+          await this.guardarUsuarioLogueado();
 
           //extras
           let extras: NavigationExtras = {
