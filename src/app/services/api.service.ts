@@ -48,4 +48,15 @@ export class ApiService {
     return this.http.get(this.URL_DUOC + '/api_duoc/usuario/sedes_obtener').pipe();
   }
 
+  //actualizar contraseña y carrera
+  actualizarUsuario(correo: string, contrasena: string, carrera: string) {
+    let usuario: any = {};
+    usuario.correo = correo;
+    usuario.contrasena = contrasena;
+    usuario.carrera = carrera;
+
+    //api PATCH
+    return this.http.patch(this.URL_DUOC + '/api_duoc/usuario/usuario_modificar', usuario).pipe();
+  }
+
 }

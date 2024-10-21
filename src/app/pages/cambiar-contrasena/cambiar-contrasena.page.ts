@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { lastValueFrom } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -10,8 +12,9 @@ import { ToastController } from '@ionic/angular';
 export class CambiarContrasenaPage implements OnInit {
 
   //modelos para el cambio de contraseña
+  mdl_correo: string = '';
   mdl_contrasenaNueva: string = '';
-  mdl_confirmarContrasenaNueva: string = '';
+  mdl_carrera: string = '';
   //correo
   correo: string = '';
   //spinner de recarga
@@ -23,7 +26,8 @@ export class CambiarContrasenaPage implements OnInit {
 
   constructor(
     private router: Router,
-    private toastControlador: ToastController
+    private toastControlador: ToastController,
+    private api: ApiService
   ) { }
 
   ngOnInit() {}
@@ -42,27 +46,44 @@ export class CambiarContrasenaPage implements OnInit {
   }
 
   //funcion para cambiar contraseña
-  async cambiarContrasena() {
+  async actualizarUsuario() {
     this.spinnerVisible = true;
     this.botonDeshabilitado = true;
 
+    let datos = this.api.actualizarUsuario(
+      this.mdl_correo,
+      this.mdl_contrasenaNueva,
+      this.mdl_carrera
+    );
+    let respuesta = await lastValueFrom(datos);
+    let json_texto = JSON.stringify(respuesta);
+    let json = JSON.parse(json_texto);
+    console.log('DGZ: ' + json_texto);
+
     setTimeout(() => {
-      this.spinnerRecarga = true;
+      if (json.status == 'error') {
+        this.mostrarToast(json.message, 'danger', 3000);
+        this.botonDeshabilitado = false;
+        this.mdl_correo = '';
+        this.mdl_contrasenaNueva = '';
+        this.mdl_carrera = '';
+      } else {
+        this.mostrarToast(json.message, 'success', 1500);
+        this.spinnerRecarga = true;
 
-      this.mostrarToast('Cambio de contraseña correcto, redirigiendo a la pantalla principal...', 'success', 1500);
+        //redirigir al principal
+        let extras: NavigationExtras = {
+          state: {
+            alertReinicio: true
+          },
+          replaceUrl: true
+        };
 
-      //redirigir al principal
-      let extras: NavigationExtras = {
-        state: {
-          alertReinicio: true
-        },
-        replaceUrl: true
-      };
-
-      setTimeout(() => {
-        this.router.navigate(['principal'], extras);
-        this.spinnerRecarga = false;
-      }, 2000);
+        setTimeout(() => {
+          this.router.navigate(['principal'], extras);
+          this.spinnerRecarga = false;
+        }, 2000);
+      }
 
       this.spinnerVisible = false;
     }, 1000);
