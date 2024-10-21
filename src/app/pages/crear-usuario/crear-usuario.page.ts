@@ -32,14 +32,7 @@ export class CrearUsuarioPage implements OnInit {
     private toastControlador: ToastController
   ) { }
 
-  ngOnInit() {
-    //spinner de recarga al iniciar la pagina crear usuario
-    this.spinnerRecarga = true;
-
-    setTimeout(() => {
-      this.spinnerRecarga = false;
-    }, 1000);
-  }
+  ngOnInit() {}
   
   //funcion del toast
   async mostrarToast(mensaje: string, color: string, duracion: number) {
