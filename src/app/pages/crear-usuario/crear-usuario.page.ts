@@ -40,7 +40,9 @@ export class CrearUsuarioPage implements OnInit {
       message: mensaje,
       color: color,
       duration: duracion,
-      position: 'bottom'
+      position: 'bottom',
+      mode: 'md', //diseño de material design
+      cssClass: 'toast' //clase del global.scss
     });
     toast.present();
   }
