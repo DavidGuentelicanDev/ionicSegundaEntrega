@@ -24,7 +24,12 @@
     <!--card con datos de usuario-->
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Bienvenido/a {{ nombre }} {{ apellido }}</ion-card-title>
+        <!--icono de foto de perfil centrado-->
+        <div class="foto-perfil">
+          <ion-icon name="person-circle-outline"></ion-icon>
+        </div>
+        <!--datos de perfil-->
+        <ion-card-title class="titulo-centrado">Bienvenido/a {{ nombre }} {{ apellido }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <p>Correo electrónico: {{ correo }}</p>

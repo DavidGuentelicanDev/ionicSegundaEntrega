@@ -1,12 +1,35 @@
+/* CARD CON DATOS DE PERFIL */
+
+//foto de perfil
+.foto-perfil {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; //espacio debajo de la foto
+}
+
+.foto-perfil ion-icon {
+    font-size: 80px; //tamaño del icono
+    color: #555; //Color del icono
+    border-radius: 50%; //hace el icono circular
+    border: 3px solid #ccc; //borde circular
+}
+
+//titulo centrado
+.titulo-centrado {
+    text-align: center; //centrar el texto
+    font-size: 1.2rem; //tamaño de fuente ajustado
+    margin-top: 5px; //espacio entre la foto y el titulo
+}
+
+
 /* CARD DE LAS SEDES */
 
 ion-thumbnail {
-    width: 100px; /* Ajusta el tamaño del thumbnail */
+    width: 100px; //ajusta el tamaño del thumbnail
     height: 100px;
 }
 
-/* SKELETONS */
-
+//skeletons
 .skeleton-card {
     display: flex;
     flex-direction: column;
@@ -32,7 +55,6 @@ ion-thumbnail {
     width: 70%; //varia el ancho de la ultima linea
 }
 
-/* card con sedes */
 //item del card
 ion-item {
     --padding-start: 0;
