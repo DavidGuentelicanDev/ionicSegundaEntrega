@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="barra-header">
     <ion-title>Cambio de Contraseña</ion-title>
 
     <ion-buttons slot="start">
@@ -8,6 +8,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  
+<ion-content [fullscreen]="true" class="background-general">
+  <!--spinner de recarga-->
+  <div *ngIf="spinnerRecarga" class="spinner-superpuesto">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-button (click)="cambiarContrasena()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
+    <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>
+    <span *ngIf="!spinnerVisible">Cambiar contraseña</span>
+  </ion-button>
+
 </ion-content>

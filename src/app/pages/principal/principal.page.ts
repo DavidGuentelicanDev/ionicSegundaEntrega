@@ -17,7 +17,7 @@ export class PrincipalPage implements OnInit {
   //skeletons
   skeletons = Array(3);
   skeletonsCargando: boolean = true; 
-  //variables para recibir extras
+  //variables para mostrar usuario
   correo: string = '';
   nombre: string = '';
   apellido: string = '';
@@ -33,36 +33,23 @@ export class PrincipalPage implements OnInit {
     private alertControlador: AlertController
   ) { }
 
-  ngOnInit() {
-    //spinner de recarga al iniciar la pagina crear usuario
-    this.spinnerRecarga = true;
-    this.skeletonsCargando = false;
+  async ngOnInit() {
+    this.skeletonsCargando = true; //activar skeletons
 
-    //extras
+    //extras para reiniciar luego de cambiar contraseña
     let extras = this.router.getCurrentNavigation()?.extras;
 
-    setTimeout(() => {
-      if (extras?.state) {
-        this.correo = extras?.state['correo'];
-        this.nombre = extras?.state['nombre'];
-        this.apellido = extras?.state['apellido'];
-        this.carrera = extras?.state['carrera'];
-  
-        this.guardarUsuarioLogueado(); //para guardar el usuario logueado en la base de datos local
-      } else {
-        this.mostrarUsuarioLogueado(); //mostrar usuario logueado guardado en db
-      }
+    if (extras?.state) {
+      this.reiniciar();
+    }
 
-      //desactivar spinner de carga y activar skeletons
-      this.spinnerRecarga = false;
-      this.skeletonsCargando = true;
+    await this.mostrarUsuarioLogueado(); //mostrar usuario logueado guardado en db
 
-      setTimeout(() => {
-        //mostrar sedes y desactivar skeletons despues de 1 segundo
-        this.mostrarSedes();
-        this.skeletonsCargando = false;
-      }, 1000); //mantener skeletons 1 seg.
-    }, 1000); //mantener spinner cargando 1 seg.
+    setTimeout(async () => {
+      //mostrar sedes y desactivar skeletons despues de 1 segundo
+      await this.mostrarSedes();
+      this.skeletonsCargando = false;
+    }, 1000); //mantener skeletons 1 seg.
   }
 
   //funcion para mostrar sedes
@@ -92,16 +79,6 @@ export class PrincipalPage implements OnInit {
     }
   }
 
-  //funcion para guardar usuario logueado en la db
-  async guardarUsuarioLogueado() {
-    await this.db.guardarUsuarioLogueado(
-      this.correo,
-      this.nombre,
-      this.apellido,
-      this.carrera
-    );
-  }
-
   //mostrar usuarios logueados
   async mostrarUsuarioLogueado() {
     let usuario = await this.db.mostrarUsuarioLogueado();
@@ -121,7 +98,11 @@ export class PrincipalPage implements OnInit {
 
   //navegar a cambiar contraseña
   navegarCambiarContrasena() {
-    this.router.navigate(['cambiar-contrasena']);
+    let extras: NavigationExtras = {
+      replaceUrl: true
+    };
+
+    this.router.navigate(['cambiar-contrasena'], extras);
   }
 
   //funcion cerrar sesion
@@ -152,6 +133,25 @@ export class PrincipalPage implements OnInit {
         },
         {
           text: 'Cerrar',
+          handler: () => {
+            this.logout();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  //funcion para reiniciar cuando se cambie contraseña
+  async reiniciar() {
+    let alert = await this.alertControlador.create({
+      header: 'Reiniciar aplicación',
+      message: 'Para aplicar el cambio de contraseña, es necesario reiniciar la aplicación. ¿Deseas cerrar sesión ahora?',
+      backdropDismiss: false, //evita que el alert se cierre al presionar fuera
+      buttons: [
+        {
+          text: 'Cerrar sesión',
           handler: () => {
             this.logout();
           }

@@ -3,6 +3,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +22,12 @@ export class LoginPage implements OnInit {
   //spinner de recarga
   spinnerRecarga: boolean = false;
 
-  //inyectar router
+  //inyectar dependencias
   constructor(
     private router: Router,
     private api: ApiService,
-    private toastControlador: ToastController
+    private toastControlador: ToastController,
+    private db: DbService
   ) { }
 
   ngOnInit() {
@@ -66,7 +68,7 @@ export class LoginPage implements OnInit {
       let json = JSON.parse(json_texto);
       console.log('DGZ: ' + json_texto);
 
-      setTimeout(() => {
+      setTimeout(async () => {
         //validacion
         if (json.status == 'error') {
           this.mostrarToast(json.message, 'danger', 3000); //mensaje parametrizado en la api
@@ -74,14 +76,16 @@ export class LoginPage implements OnInit {
           this.mdl_contrasena = '';
           this.botonDeshabilitado = false;
         } else if (json.status == 'success') {
+          //guardando usuario que se loguea
+          await this.db.guardarUsuarioLogueado(
+            json.usuario.correo,
+            json.usuario.nombre,
+            json.usuario.apellido,
+            json.usuario.carrera
+          );
+
           //extras
           let extras: NavigationExtras = {
-            state: {
-              'correo': json.usuario.correo,
-              'nombre': json.usuario.nombre,
-              'apellido': json.usuario.apellido,
-              'carrera': json.usuario.carrera
-            },
             replaceUrl: true
           }
 
