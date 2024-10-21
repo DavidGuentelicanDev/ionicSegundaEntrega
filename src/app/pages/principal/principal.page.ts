@@ -15,7 +15,7 @@ export class PrincipalPage implements OnInit {
   //lista para las sedes
   lista_sedes: any[] = [];
   //skeletons
-  skeletons = Array(3);
+  skeletons = Array(11);
   skeletonsCargando: boolean = true; 
   //variables para mostrar usuario
   correo: string = '';
@@ -44,12 +44,11 @@ export class PrincipalPage implements OnInit {
     }
 
     await this.mostrarUsuarioLogueado(); //mostrar usuario logueado guardado en db
+    await this.mostrarSedes(); //mostrar sedes
 
     setTimeout(async () => {
-      //mostrar sedes y desactivar skeletons despues de 1 segundo
-      await this.mostrarSedes();
       this.skeletonsCargando = false;
-    }, 1000); //mantener skeletons 1 seg.
+    }, 2500); //mantener skeletons 1 seg.
   }
 
   //funcion para mostrar sedes

@@ -32,37 +32,39 @@
       </ion-card-content>
     </ion-card>
 
-    <!--mostrar skeletons si esta cargando -->
-    <ng-container *ngIf="skeletonsCargando">
-      <ion-card *ngFor="let s of skeletons" class="ion-margin-top skeleton-card">
-        <div class="skeleton-image"></div>
-        <ion-card-header>
-          <ion-card-title>
-            <div class="skeleton-text"></div>
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <div class="skeleton-text"></div>
-          <div class="skeleton-text"></div>
-          <div class="skeleton-text"></div>
-        </ion-card-content>
-      </ion-card>
-    </ng-container>
-
-    <!--card con sedes-->
-    <ng-container *ngIf="!skeletonsCargando">
-      <ion-card *ngFor="let sede of lista_sedes" class="ion-margin-top">
-        <img [src]="sede.imagen" />
-        <ion-card-header>
-          <ion-card-title>{{ sede.nombre }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p>Dirección: {{ sede.direccion }}</p>
-          <p>Horario: {{ sede.horario }}</p>
-          <p>Teléfono: {{ sede.telefono }}</p>
-        </ion-card-content>
-      </ion-card>
-    </ng-container>
+    <!--card con sedes cuando se carguen-->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Sedes DUOC UC</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!--mostrar skeletons si está cargando-->
+        <ion-list *ngIf="skeletonsCargando">
+          <ion-item *ngFor="let s of skeletons">
+            <ion-thumbnail slot="start" class="skeleton-image"></ion-thumbnail>
+            <ion-label>
+              <div class="skeleton-text"></div>
+              <div class="skeleton-text"></div>
+              <div class="skeleton-text"></div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <!--mostrar sedes cuando termine de cargar-->
+        <ion-list *ngIf="!skeletonsCargando">
+          <ion-item *ngFor="let sede of lista_sedes">
+            <ion-thumbnail slot="start">
+              <img alt="Foto de la sede" [src]="sede.imagen" />
+            </ion-thumbnail>
+            <ion-label>
+              <p><strong>{{ sede.nombre }}</strong></p>
+              <p><strong>Dirección: </strong>{{ sede.direccion }}</p>
+              <p><strong>Horario: </strong>{{ sede.horario }}</p>
+              <p><strong>Teléfono: </strong>{{ sede.telefono }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </div>
 
 </ion-content>
