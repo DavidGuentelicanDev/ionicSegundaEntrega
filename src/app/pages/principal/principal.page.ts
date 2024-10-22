@@ -115,6 +115,7 @@ export class PrincipalPage implements OnInit {
       this.nombre = usuario.nombre;
       this.apellido = usuario.apellido;
       this.carrera = usuario.carrera;
+      console.log('DGZ: usuario en la db ' + this.correo + ' ' + this.nombre + ' ' + this.apellido + ' ' + this.carrera);
     }
   }
 

@@ -112,7 +112,8 @@ export class CrearUsuarioPage implements OnInit {
       let respuesta = await lastValueFrom(datos);
       let json_texto = JSON.stringify(respuesta);
       let json = JSON.parse(json_texto);
-      console.log('DGZ: ' + json_texto);
+      console.log('DGZ: ' + json.status);
+      console.log('DGZ: ' + json.message);
 
       setTimeout(() => {
         if (json.status == 'error') {

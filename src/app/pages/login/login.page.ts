@@ -83,16 +83,18 @@ export class LoginPage implements OnInit {
       let respuesta = await lastValueFrom(datos);
       let json_texto = JSON.stringify(respuesta);
       let json = JSON.parse(json_texto);
-      console.log('DGZ: ' + json_texto);
+      console.log('DGZ: ' + json.status);
 
       setTimeout(async () => {
         //validacion
         if (json.status == 'error') {
+          console.log('DGZ: ' + json.message);
           this.mostrarToast(json.message, 'danger', 3000); //mensaje parametrizado en la api
           this.mdl_correo = '';
           this.mdl_contrasena = '';
           this.botonDeshabilitado = false;
         } else if (json.status == 'success') {
+          console.log('DGZ: ' + json.usuario.correo + ' ' + json.usuario.nombre + ' ' + json.usuario.apellido + ' ' + json.usuario.carrera);
           //guardando usuario que se loguea
           this.db_correo = json.usuario.correo;
           this.db_nombre = json.usuario.nombre;

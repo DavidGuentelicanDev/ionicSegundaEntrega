@@ -14,6 +14,7 @@ export class CambiarContrasenaPage implements OnInit {
   //modelos para el cambio de contraseña
   mdl_correo: string = '';
   mdl_contrasenaNueva: string = '';
+  mdl_confirmarContrasenaNueva: string = '';
   mdl_carrera: string = '';
   //correo
   correo: string = '';
@@ -24,6 +25,7 @@ export class CambiarContrasenaPage implements OnInit {
   //boton de registro deshabilitado
   botonDeshabilitado: boolean = false;
 
+  //inyectar dependencias necesarias
   constructor(
     private router: Router,
     private toastControlador: ToastController,
@@ -50,42 +52,63 @@ export class CambiarContrasenaPage implements OnInit {
     this.spinnerVisible = true;
     this.botonDeshabilitado = true;
 
-    let datos = this.api.actualizarUsuario(
-      this.mdl_correo,
-      this.mdl_contrasenaNueva,
-      this.mdl_carrera
-    );
-    let respuesta = await lastValueFrom(datos);
-    let json_texto = JSON.stringify(respuesta);
-    let json = JSON.parse(json_texto);
-    console.log('DGZ: ' + json_texto);
-
-    setTimeout(() => {
-      if (json.status == 'error') {
-        this.mostrarToast(json.message, 'danger', 3000);
+    setTimeout(async() => {
+      if (this.mdl_confirmarContrasenaNueva == '') { //validar adicionalmente el campo confirmar contraseña nueva con mensaje plano
+        this.mostrarToast('Todos los campos son obligatorios', 'warning', 3000);
+        this.spinnerVisible = false;
         this.botonDeshabilitado = false;
-        this.mdl_correo = '';
+      } else if (this.mdl_contrasenaNueva.length < 3) { //validar largo de contraseña con min 3 caracteres, mensaje plano
+        this.mostrarToast('La nueva contraseña debe tener un largo mínimo de 3 caracteres', 'warning', 3000);
         this.mdl_contrasenaNueva = '';
-        this.mdl_carrera = '';
-      } else {
-        this.mostrarToast(json.message, 'success', 1500);
-        this.spinnerRecarga = true;
+        this.mdl_confirmarContrasenaNueva = '';
+        this.spinnerVisible = false;
+        this.botonDeshabilitado = false;
+      } else if (this.mdl_contrasenaNueva != this.mdl_confirmarContrasenaNueva) { //nueva contraseña y confirmar nueva contraseña distintas, mensaje plano
+        this.mostrarToast('Las contraseñas no coinciden', 'warning', 3000);
+        this.mdl_contrasenaNueva = '';
+        this.mdl_confirmarContrasenaNueva = '';
+        this.spinnerVisible = false;
+        this.botonDeshabilitado = false;
+      } else if (this.mdl_contrasenaNueva == this.mdl_confirmarContrasenaNueva) { //nueva contraseña y confirmar nueva contraseña iguales
+        let datos = this.api.actualizarUsuario(
+          this.mdl_correo,
+          this.mdl_contrasenaNueva,
+          this.mdl_carrera
+        );
+        let respuesta = await lastValueFrom(datos);
+        let json_texto = JSON.stringify(respuesta);
+        let json = JSON.parse(json_texto);
+        console.log('DGZ: ' + json.status);
+        console.log('DGZ: ' + json.message);
 
-        //redirigir al principal
-        let extras: NavigationExtras = {
-          state: {
-            alertReinicio: true
-          },
-          replaceUrl: true
-        };
+        //se capturan los mensajes de la api segun la respuesta
+        if (json.status == 'error') {
+          this.mostrarToast(json.message, 'warning', 3000);
+          this.botonDeshabilitado = false;
+          this.mdl_correo = '';
+          this.mdl_contrasenaNueva = '';
+          this.mdl_carrera = '';
+          this.mdl_confirmarContrasenaNueva = ''
+        } else {
+          this.mostrarToast(json.message, 'success', 1500);
+          this.spinnerRecarga = true;
 
-        setTimeout(() => {
-          this.router.navigate(['principal'], extras);
-          this.spinnerRecarga = false;
-        }, 2000);
+          //redirigir al principal
+          let extras: NavigationExtras = {
+            state: {
+              alertReinicio: true //se envia extras para solicitar reiniciar app y volver a loguearse
+            },
+            replaceUrl: true
+          };
+
+          setTimeout(() => {
+            this.router.navigate(['principal'], extras);
+            this.spinnerRecarga = false;
+          }, 2000);
+        }
+
+        this.spinnerVisible = false;
       }
-
-      this.spinnerVisible = false;
     }, 1000);
   }
 
