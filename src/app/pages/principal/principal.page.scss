@@ -25,8 +25,8 @@
 /* CARD DE LAS SEDES */
 
 ion-thumbnail {
-    width: 100px; //ajusta el tamaño del thumbnail
-    height: 100px;
+    width: 70px; //ajusta el tamaño del thumbnail
+    height: 70px;
 }
 
 //skeletons
@@ -37,8 +37,8 @@ ion-thumbnail {
 }
 
 .skeleton-image {
-    width: 100px; //ajusta el tamaño para que sea similar al thumbnail
-    height: 100px;
+    width: 70px; //ajusta el tamaño para que sea similar al thumbnail
+    height: 70px;
     background-color: #ccc;
     border-radius: 10px;
 }
@@ -58,4 +58,21 @@ ion-thumbnail {
 //item del card
 ion-item {
     --padding-start: 0;
+}
+
+/* MODAL */
+ion-modal {
+    --height: 50%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal::part(backdrop) {
+    background: rgba(209, 213, 219);
+    opacity: 1;
+}
+
+ion-modal ion-toolbar {
+    --background: rgb(14 116 144);
+    --color: white;
 }

@@ -45,31 +45,57 @@
       <ion-card-content>
         <!--mostrar skeletons si está cargando-->
         <ion-list *ngIf="skeletonsCargando">
-          <ion-item *ngFor="let s of skeletons">
+          <ion-item *ngFor="let s of skeletons" lines="none">
             <ion-thumbnail slot="start" class="skeleton-image"></ion-thumbnail>
             <ion-label>
-              <div class="skeleton-text"></div>
-              <div class="skeleton-text"></div>
               <div class="skeleton-text"></div>
             </ion-label>
           </ion-item>
         </ion-list>
         <!--mostrar sedes cuando termine de cargar-->
         <ion-list *ngIf="!skeletonsCargando">
-          <ion-item *ngFor="let sede of lista_sedes">
+          <ion-item *ngFor="let sede of lista_sedes" (click)="abrirModal(sede)" lines="none">
             <ion-thumbnail slot="start">
               <img alt="Foto de la sede" [src]="sede.imagen" />
             </ion-thumbnail>
             <ion-label>
               <p><strong>{{ sede.nombre }}</strong></p>
-              <p><strong>Dirección: </strong>{{ sede.direccion }}</p>
-              <p><strong>Horario: </strong>{{ sede.horario }}</p>
-              <p><strong>Teléfono: </strong>{{ sede.telefono }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
       </ion-card-content>
     </ion-card>
+
+    <!--modal para informacion de sedes-->
+    <ion-modal [isOpen]="modalAbierto" backdropDismiss="false" class="ion-margin-horizontal">
+      <ng-template>
+        <ion-content>
+          <!--toolbar del modal-->
+          <ion-toolbar>
+            <ion-title>{{ sedeSeleccionada?.nombre }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button color="light" (click)="cerrarModal()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+          <!--imagen del modal-->
+          <div style="text-align: center" class="ion-margin-horizontal ion-margin-top">
+            <ion-img [src]="sedeSeleccionada?.imagen" alt="Imagen de la sede" style="max-width: 100%; height: auto;"></ion-img>
+          </div>
+          <!--datos de la sede-->
+          <ion-list class="ion-margin-horizontal">
+            <ion-item lines="none">
+              <ion-label>
+                <p><strong>Dirección:</strong> {{ sedeSeleccionada?.direccion }}</p>
+                <p><strong>Teléfono:</strong> {{ sedeSeleccionada?.telefono }}</p>
+                <p><strong>Horario:</strong> {{ sedeSeleccionada?.horario }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
   </div>
 
 </ion-content>

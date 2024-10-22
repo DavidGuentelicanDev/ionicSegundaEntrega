@@ -24,6 +24,9 @@ export class PrincipalPage implements OnInit {
   carrera: string = '';
   //spinner de recarga
   spinnerRecarga: boolean = false;
+  //modal con detalle por sede
+  modalAbierto: boolean = false;
+  sedeSeleccionada: any = null;
 
   //inyectar dependencias
   constructor(
@@ -49,7 +52,7 @@ export class PrincipalPage implements OnInit {
 
     setTimeout(async () => {
       this.skeletonsCargando = false;
-    }, 2500); //mantener skeletons 1 seg.
+    }, 2000); //mantener skeletons 1 seg.
   }
 
   //funcion del toast
@@ -90,6 +93,17 @@ export class PrincipalPage implements OnInit {
         this.lista_sedes.push(sede);
       }
     }
+  }
+
+  //funcion para abrir el modal con el detalle por sede
+  abrirModal(sede: any) {
+    this.sedeSeleccionada = sede;
+    this.modalAbierto = true;
+  }
+
+  //funcion para cerrar el modal
+  cerrarModal() {
+    this.modalAbierto = false;
   }
 
   //mostrar usuarios logueados
