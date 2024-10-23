@@ -26,6 +26,8 @@ export class LoginPage implements OnInit {
   db_nombre: string = '';
   db_apellido: string = '';
   db_carrera: string = '';
+  //contraseña visible
+  verContrasena: boolean = false;
 
   //inyectar dependencias
   constructor(
@@ -120,6 +122,11 @@ export class LoginPage implements OnInit {
         this.spinnerVisible = false;
       }, 1000);
     }
+  }
+
+  //contraseña visible
+  contrasenaVisible() {
+    this.verContrasena = !this.verContrasena; //alterna la visibilidad de la contraseña
   }
 
 }

@@ -35,10 +35,18 @@
         <ion-input [(ngModel)]="mdl_correo" label="Correo" labelPlacement="floating" placeholder="correo@duocuc.cl"></ion-input>
       </ion-item>
       <ion-item class="ion-margin-top input" lines="none">
-        <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" type="password" labelPlacement="floating" placeholder="Ingresa tu contraseña"></ion-input>
+        <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" [type]="verContrasena ? 'text' : 'password'" labelPlacement="floating" placeholder="Ingresa tu contraseña">
+          <ion-button fill="clear" slot="end" (click)="contrasenaVisible()">
+            <ion-icon [name]="verContrasena ? 'eye' : 'eye-off'" class="ojo-contrasena"></ion-icon>
+          </ion-button>
+        </ion-input>
       </ion-item>
       <ion-item class="ion-margin-top input" lines="none">
-        <ion-input [(ngModel)]="mdl_confirmarContrasena" label="Confirmar contraseña" type="password" labelPlacement="floating" placeholder="Confirma tu contraseña"></ion-input>
+        <ion-input [(ngModel)]="mdl_confirmarContrasena" label="Confirmar contraseña" [type]="verConfirmarContrasena ? 'text' : 'password'" labelPlacement="floating" placeholder="Confirma tu contraseña">
+          <ion-button fill="clear" slot="end" (click)="confirmarContrasenaVisible()">
+            <ion-icon [name]="verConfirmarContrasena ? 'eye' : 'eye-off'" class="ojo-contrasena"></ion-icon>
+          </ion-button>
+        </ion-input>
       </ion-item>
       <ion-button (click)="crearUsuario()" [disabled]="botonDeshabilitado" expand="block" shape="round" color="tertiary" class="ion-margin-top">
         <ion-spinner *ngIf="spinnerVisible" name="bubbles"></ion-spinner>

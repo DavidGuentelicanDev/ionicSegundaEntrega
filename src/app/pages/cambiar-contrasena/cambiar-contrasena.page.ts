@@ -24,6 +24,9 @@ export class CambiarContrasenaPage implements OnInit {
   spinnerVisible: boolean = false;
   //boton de registro deshabilitado
   botonDeshabilitado: boolean = false;
+  //contraseña visible
+  verContrasena: boolean = false;
+  verConfirmarContrasena: boolean = false;
 
   //inyectar dependencias necesarias
   constructor(
@@ -110,6 +113,16 @@ export class CambiarContrasenaPage implements OnInit {
         this.spinnerVisible = false;
       }
     }, 1000);
+  }
+
+  //contraseña visible
+  contrasenaVisible() {
+    this.verContrasena = !this.verContrasena; //alterna la visibilidad de la contraseña
+  }
+
+  //confirmar contraseña visible
+  confirmarContrasenaVisible() {
+    this.verConfirmarContrasena = !this.verConfirmarContrasena; //alterna la visibilidad de la contraseña
   }
 
 }

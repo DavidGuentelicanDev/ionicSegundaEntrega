@@ -24,6 +24,9 @@ export class CrearUsuarioPage implements OnInit {
   botonDeshabilitado: boolean = false;
   //spinner de recarga
   spinnerRecarga: boolean = false;
+  //contraseña visible
+  verContrasena: boolean = false;
+  verConfirmarContrasena: boolean = false;
 
   //inyectar router, api
   constructor(
@@ -135,6 +138,16 @@ export class CrearUsuarioPage implements OnInit {
         this.spinnerVisible = false;
       }, 1000); //carga de 1 segundo antes de arrojar el toast
     }
+  }
+
+  //contraseña visible
+  contrasenaVisible() {
+    this.verContrasena = !this.verContrasena; //alterna la visibilidad de la contraseña
+  }
+
+  //confirmar contraseña visible
+  confirmarContrasenaVisible() {
+    this.verConfirmarContrasena = !this.verConfirmarContrasena; //alterna la visibilidad de la contraseña
   }
 
 }
