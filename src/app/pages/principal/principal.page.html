@@ -91,19 +91,19 @@
               <p><strong>Dirección:</strong> {{ sedeSeleccionada?.direccion }}</p>
               <p><strong>Teléfono:</strong> {{ sedeSeleccionada?.telefono }}</p>
               <p><strong>Horario:</strong> {{ sedeSeleccionada?.horario }}</p>
-              <p><strong>Me gusta:</strong> {{ contadorMeGusta }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
         <!--toolbar debajo de la lista con botones-->
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="darMeGusta()" [color]="colorMeGusta">
-              <ion-icon [name]="tipoMeGusta" slot="icon-only"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
       </ion-content>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="darMeGusta()" [color]="colorMeGusta">
+            <ion-icon [name]="tipoMeGusta" slot="icon-only"></ion-icon>
+            <span>{{ contadorMeGusta }}</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
     </ng-template>
   </ion-modal>
 
