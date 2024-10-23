@@ -3,6 +3,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -18,6 +19,8 @@ export class CambiarContrasenaPage implements OnInit {
   mdl_carrera: string = '';
   //correo
   correo: string = '';
+  //correo logueado
+  correoLogueado: string = '';
   //spinner de recarga
   spinnerRecarga: boolean = false;
   //spinner boton
@@ -32,10 +35,14 @@ export class CambiarContrasenaPage implements OnInit {
   constructor(
     private router: Router,
     private toastControlador: ToastController,
-    private api: ApiService
+    private api: ApiService,
+    private db: DbService
   ) { }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    //validar que exista usuario al ingresar a la pantalla
+    await this.mostrarUsuarioLogueado();
+  }
 
   //funcion del toast
   async mostrarToast(mensaje: string, color: string, duracion: number) {
@@ -50,6 +57,16 @@ export class CambiarContrasenaPage implements OnInit {
     toast.present();
   }
 
+  //mostrar usuarios logueados
+  async mostrarUsuarioLogueado() {
+    let usuario = await this.db.mostrarUsuarioLogueado();
+    
+    if (usuario) {
+      this.correoLogueado = usuario.correo;
+      console.log('DGZ: usuario en la db ' + this.correo);
+    }
+  }
+
   //funcion para cambiar contraseña
   async actualizarUsuario() {
     this.spinnerVisible = true;
@@ -58,6 +75,13 @@ export class CambiarContrasenaPage implements OnInit {
     setTimeout(async() => {
       if (this.mdl_confirmarContrasenaNueva == '') { //validar adicionalmente el campo confirmar contraseña nueva con mensaje plano
         this.mostrarToast('Todos los campos son obligatorios', 'warning', 3000);
+        this.spinnerVisible = false;
+        this.botonDeshabilitado = false;
+      } else if (this.mdl_correo != this.correoLogueado) {
+        this.mostrarToast('El correo ingresado no corresponde al usuario logueado', 'warning', 3000);
+        this.mdl_correo = '';
+        this.mdl_contrasenaNueva = '';
+        this.mdl_confirmarContrasenaNueva = '';
         this.spinnerVisible = false;
         this.botonDeshabilitado = false;
       } else if (this.mdl_contrasenaNueva.length < 3) { //validar largo de contraseña con min 3 caracteres, mensaje plano
