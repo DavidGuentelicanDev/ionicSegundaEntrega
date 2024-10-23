@@ -27,6 +27,11 @@ export class PrincipalPage implements OnInit {
   //modal con detalle por sede
   modalAbierto: boolean = false;
   sedeSeleccionada: any = null;
+  //variables para el me gusta
+  meGusta: boolean = false;
+  colorMeGusta: string = 'light';
+  tipoMeGusta: string = 'heart-outline';
+  contadorMeGusta: number = 0;
 
   //inyectar dependencias
   constructor(
@@ -96,9 +101,13 @@ export class PrincipalPage implements OnInit {
   }
 
   //funcion para abrir el modal con el detalle por sede
-  abrirModal(sede: any) {
+  async abrirModal(sede: any) {
     this.sedeSeleccionada = sede;
     this.modalAbierto = true;
+
+    //verificar si hay me gusta guardado en la tabla me_gusta para cada sede, y contarlos
+    await this.existeMeGusta();
+    await this.contarMeGustaPorSede();
   }
 
   //funcion para cerrar el modal
@@ -194,6 +203,70 @@ export class PrincipalPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+
+  //FUNCIONALIDAD DEL ME GUSTA
+
+  //funcion para guardar el me gusta
+  async guardarMeGusta() {
+    await this.db.guardarMeGusta(this.correo, this.sedeSeleccionada.nombre);
+  }
+
+  //funcion para eliminar me gusta
+  async eliminarMeGusta () {
+    await this.db.eliminarMeGusta(this.correo);
+  }
+
+  //funcion para el boton me gusta por sede
+  async darMeGusta() {
+    if (this.meGusta == false) {
+      this.meGusta = true;
+      this.colorMeGusta = 'danger';
+      this.tipoMeGusta = 'heart';
+
+      try {
+        //guardar me gusta en la tabla me_gusta
+        await this.guardarMeGusta();
+        this.mostrarToast('Me gusta', 'dark', 1000);
+      } catch (e) {
+        console.log('DGZ: Error al guardar me gusta ' + JSON.stringify(e));
+      }
+    } else {
+      this.meGusta = false;
+      this.colorMeGusta = 'light';
+      this.tipoMeGusta = 'heart-outline';
+
+      try {
+        //eliminar el me gusta de la tabla me_gusta
+        await this.eliminarMeGusta();
+        this.mostrarToast('Ya no me gusta', 'dark', 1000);
+      } catch (e) {
+        console.log('DGZ: Error al eliminar me gusta ' + JSON.stringify(e));
+      }
+    }
+  }
+
+  //verificar si existe me gusta por sede
+  async existeMeGusta() {
+    let meGustaGuardado = await this.db.existeMeGusta(this.correo, this.sedeSeleccionada.nombre);
+
+    //activa la logica front del megusta
+    if (meGustaGuardado) {
+      this.meGusta = true;
+      this.colorMeGusta = 'danger';
+      this.tipoMeGusta = 'heart';
+    } else {
+      this.meGusta = false;
+      this.colorMeGusta = 'light';
+      this.tipoMeGusta = 'heart-outline';
+    }
+  }
+
+  //funcion para contar los me gusta por sede
+  async contarMeGustaPorSede() {
+    let contador = await this.db.contarMeGustaPorSede(this.sedeSeleccionada.nombre);
+    this.contadorMeGusta = contador;
   }
 
 }

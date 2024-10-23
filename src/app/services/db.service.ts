@@ -91,4 +91,79 @@ export class DbService {
     }
   }
 
+  //IMPLEMENTARE UNA NUEVA FUNCIONALIDAD LIGADA A LA BASE DE DATOS LOCAL SQLITE
+  //LA IDEA ES PODER DARLE ME GUSTA A CADA SEDE, Y QUE ESTOS ME GUSTA PERSISTAN POR USUARIO Y SEDE,
+  //PARA PODER CONTAR CUANTOS ME GUSTA LLEVA CADA SEDE
+
+  //crear tabla me gusta
+  async crearTablaMeGusta () {
+    await this.abrirDB();
+
+    try {
+      await this.dbInstancia?.executeSql('CREATE TABLE IF NOT EXISTS ME_GUSTA (USUARIO VARCHAR(30), SEDE VARCHAR(50))', []);
+      console.log('DGZ: TABLA ME_GUSTA CREADA OK');
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+    }
+  }
+
+  //guardar me gusta
+  async guardarMeGusta(usuario: string, sede: string) {
+    await this.abrirDB();
+
+    try {
+      await this.dbInstancia?.executeSql('INSERT INTO ME_GUSTA VALUES(?, ?)', [usuario, sede]);
+      console.log('DGZ: ME GUSTA GUARDADO ' + usuario + ' ' + sede);
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+    }
+  }
+
+  //eliminar me gusta
+  async eliminarMeGusta(usuario: string) {
+    await this.abrirDB();
+
+    try {
+      await this.dbInstancia?.executeSql('DELETE FROM ME_GUSTA WHERE USUARIO = ?', [usuario]);
+      console.log('DGZ: ME GUSTA DEL USUARIO ' + usuario + ' BORRADO OK');
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+    }
+  }
+
+  //verificar si existe un me gusta
+  async existeMeGusta(usuario: string, sede: string): Promise<boolean> {
+    await this.abrirDB();
+
+    try {
+      let resultado = await this.dbInstancia?.executeSql('SELECT USUARIO, SEDE FROM ME_GUSTA WHERE USUARIO = ? AND SEDE = ?', [usuario, sede]);
+      console.log('DGZ: HAY UN ME GUSTA GUARDADO');
+      return resultado?.rows.length > 0;
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+      return false;
+    }
+  }
+
+  //contar me gusta por sede
+  async contarMeGustaPorSede(sede: string): Promise<number> {
+    await this.abrirDB();
+
+    try {
+      let resultado = await this.dbInstancia?.executeSql('SELECT COUNT(SEDE) AS total FROM ME_GUSTA WHERE SEDE = ?', [sede]);
+
+      //si hay filas con el nombre de la sede
+      if (resultado?.rows.length > 0) {
+        //entonces cuenta la cantidad de filas
+        let contador = resultado.rows.item(0).total;
+        console.log('DGZ: TOTAL ME GUSTA PARA SEDE ' + sede + ' ES ' + contador);
+        return contador; //me devuelve el total
+      }
+      return 0;
+    } catch (e) {
+      console.log('DGZ: ' + JSON.stringify(e));
+      return 0;
+    }
+  }
+
 }

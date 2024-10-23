@@ -16,6 +16,7 @@ export class InicioPage implements OnInit {
     //para la base de datos local
     this.db.abrirDB();
     this.db.crearTablaUsuarioLogueado();
+    this.db.crearTablaMeGusta();
 
     let extras: NavigationExtras = {
       replaceUrl: true
