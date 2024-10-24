@@ -58,6 +58,7 @@ export class LoginPage implements OnInit {
       this.router.navigate(['crear-usuario']);
       this.mdl_correo = '';
       this.mdl_contrasena = '';
+      this.verContrasena = false;
   }
 
   //funcion para guardar el usuario logueado
@@ -75,53 +76,45 @@ export class LoginPage implements OnInit {
     this.spinnerVisible = true;
     this.botonDeshabilitado = true;
 
-    if (this.mdl_correo == '' || this.mdl_contrasena == '') { //validacion campos vacios, texto plano
-      this.mostrarToast('Debes indicar un usuario y una contraseña para poder ingresar', 'warning', 3000);
-      this.spinnerVisible = false;
-      this.botonDeshabilitado = false;
-    } else {
-      //logueo a traves de la api
-      let datos = this.api.login(this.mdl_correo, this.mdl_contrasena);
-      let respuesta = await lastValueFrom(datos);
-      let json_texto = JSON.stringify(respuesta);
-      let json = JSON.parse(json_texto);
-      console.log('DGZ: ' + json.status);
+    let datos = this.api.login(this.mdl_correo, this.mdl_contrasena);
+    let respuesta = await lastValueFrom(datos);
+    let json_texto = JSON.stringify(respuesta);
+    let json = JSON.parse(json_texto);
+    console.log('DGZ: ' + json.status);
 
-      setTimeout(async () => {
-        //validacion
-        if (json.status == 'error') {
-          console.log('DGZ: ' + json.message);
-          this.mostrarToast(json.message, 'danger', 3000); //mensaje parametrizado en la api
-          this.mdl_correo = '';
-          this.mdl_contrasena = '';
-          this.botonDeshabilitado = false;
-        } else if (json.status == 'success') {
-          console.log('DGZ: ' + json.usuario.correo + ' ' + json.usuario.nombre + ' ' + json.usuario.apellido + ' ' + json.usuario.carrera);
-          //guardando usuario que se loguea
-          this.db_correo = json.usuario.correo;
-          this.db_nombre = json.usuario.nombre;
-          this.db_apellido = json.usuario.apellido;
-          this.db_carrera = json.usuario.carrera;
+    setTimeout(async () => {
+      if (json.status == 'error') {
+        console.log('DGZ: ' + json.message);
+        this.mostrarToast(json.message, 'warning', 3000); //mensaje parametrizado en la api
+        this.mdl_correo = '';
+        this.mdl_contrasena = '';
+        this.verContrasena = false;
+        this.botonDeshabilitado = false;
+      } else if (json.status == 'success') { //respuesta correcta
+        console.log('DGZ: ' + json.usuario.correo + ' ' + json.usuario.nombre + ' ' + json.usuario.apellido + ' ' + json.usuario.carrera);
+        //guardando usuario que se loguea
+        this.db_correo = json.usuario.correo;
+        this.db_nombre = json.usuario.nombre;
+        this.db_apellido = json.usuario.apellido;
+        this.db_carrera = json.usuario.carrera;
+        await this.guardarUsuarioLogueado(); //guardando usuario
 
-          await this.guardarUsuarioLogueado();
-
-          //extras
-          let extras: NavigationExtras = {
-            replaceUrl: true
-          }
-
-          this.mostrarToast('Navegando a la página principal...', 'success', 2000); //texto plano
-          this.spinnerRecarga = true; //carga un spinner que ocupa toda la pantalla mientras navega al principal
-
-          setTimeout(() => {
-            this.router.navigate(['principal'], extras);
-            this.spinnerRecarga = false;
-          }, 2000);
+        //extras
+        let extras: NavigationExtras = {
+          replaceUrl: true
         }
 
-        this.spinnerVisible = false;
-      }, 1000);
-    }
+        this.mostrarToast('Navegando a la página principal', 'success', 2000);
+        this.spinnerRecarga = true; //carga un spinner que ocupa toda la pantalla mientras navega al principal
+
+        setTimeout(() => {
+          this.router.navigate(['principal'], extras);
+          this.spinnerRecarga = false;
+        }, 2000);
+      }
+
+      this.spinnerVisible = false;
+    }, 1000);
   }
 
   //contraseña visible

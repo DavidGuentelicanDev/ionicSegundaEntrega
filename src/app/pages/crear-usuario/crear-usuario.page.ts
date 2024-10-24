@@ -62,70 +62,71 @@ export class CrearUsuarioPage implements OnInit {
 
     const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //constante para validar formato de correo
 
-    if (this.mdl_confirmarContrasena == '') { //valida que el usuario ingrese la confirmacion de contraseña, envia mensaje plano
-      setTimeout(() => {
+    setTimeout(async () => {
+      if (this.mdl_confirmarContrasena == '') { //valida que el usuario ingrese la confirmacion de contraseña, envia mensaje plano
         this.mostrarToast('Todos los campos son obligatorios', 'warning', 3000);
         this.mdl_contrasena = '';
         this.botonDeshabilitado = false;
         this.spinnerVisible = false;
-      }, 1000);
-    } else if (!correoRegex.test(this.mdl_correo)) { //valida que correo tenga formato correo, mensaje plano
-      setTimeout(() => {
+        this.verContrasena = false;
+        this.verConfirmarContrasena = false;
+      } else if (!correoRegex.test(this.mdl_correo)) { //valida que correo tenga formato correo, mensaje plano
         this.mostrarToast('Debes ingresar un formato válido de correo electrónico', 'warning', 3000);
         this.mdl_correo = '';
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
         this.botonDeshabilitado = false;
         this.spinnerVisible = false;
-      }, 1000); //carga de 1 segundo antes de arrojar el toast
-    } else if (!this.mdl_correo.endsWith('duocuc.cl')) { //valida que el correo tenga dominio @duocuc.cl, mensaje plano
-      setTimeout(() => {
+        this.verContrasena = false;
+        this.verConfirmarContrasena = false;
+      } else if (!this.mdl_correo.endsWith('duocuc.cl')) { //valida que el correo tenga dominio @duocuc.cl, mensaje plano
         this.mostrarToast('Debes ingresar un correo válido de DUOC UC', 'warning', 3000);
         this.mdl_correo = '';
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
         this.botonDeshabilitado = false;
         this.spinnerVisible = false;
-      }, 1000); //carga de 1 segundo antes de arrojar el toast
-    } else if (this.mdl_contrasena.length < 3) { //validar que contraseña tenga un largo minimo de n, mensaje plano
-      setTimeout(() => {
+        this.verContrasena = false;
+        this.verConfirmarContrasena = false;
+      } else if (this.mdl_contrasena.length < 3) { //validar que contraseña tenga un largo minimo de n, mensaje plano
         this.mostrarToast('La contraseña debe tener una extensión mínima de 3 caracteres', 'warning', 3000);
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
         this.botonDeshabilitado = false;
         this.spinnerVisible = false;
-      }, 1000); //carga de 1 segundo antes de arrojar el toast
-    } else if (this.mdl_contrasena != this.mdl_confirmarContrasena) { //valida que contraseña y confirmar contraseña sean distintas, envia mensaje plano
-      setTimeout(() => {
+        this.verContrasena = false;
+        this.verConfirmarContrasena = false;
+      } else if (this.mdl_contrasena != this.mdl_confirmarContrasena) { //valida que contraseña y confirmar contraseña sean distintas, envia mensaje plano
         this.mostrarToast('Las contraseñas no coinciden', 'warning', 3000);
         this.mdl_contrasena = '';
         this.mdl_confirmarContrasena = '';
         this.botonDeshabilitado = false;
         this.spinnerVisible = false;
-      }, 1000); //carga de 1 segundo antes de arrojar el toast
-    } else if (this.mdl_contrasena == this.mdl_confirmarContrasena) { //si contraseña y confirmar contraseña son iguales, sigue el proceso de la api
-      //creacion de usuario a traves de la api
-      let datos = this.api.crearUsuario(
-        this.mdl_correo,
-        this.mdl_contrasena,
-        this.mdl_nombre,
-        this.mdl_apellido,
-        this.mdl_carrera
-      );
-      let respuesta = await lastValueFrom(datos);
-      let json_texto = JSON.stringify(respuesta);
-      let json = JSON.parse(json_texto);
-      console.log('DGZ: ' + json.status);
-      console.log('DGZ: ' + json.message);
+        this.verContrasena = false;
+        this.verConfirmarContrasena = false;
+      } else if (this.mdl_contrasena == this.mdl_confirmarContrasena) { //contraseña y confirmar contraseña son iguales
+        let datos = this.api.crearUsuario(
+          this.mdl_correo,
+          this.mdl_contrasena,
+          this.mdl_nombre,
+          this.mdl_apellido,
+          this.mdl_carrera
+        );
+        let respuesta = await lastValueFrom(datos);
+        let json_texto = JSON.stringify(respuesta);
+        let json = JSON.parse(json_texto);
+        console.log('DGZ: ' + json.status);
+        console.log('DGZ: ' + json.message);
 
-      setTimeout(() => {
-        if (json.status == 'error') {
+        if (json.status == 'error') { //errores de la api
           this.mostrarToast(json.message, 'warning', 3000); //mensaje parametrizado en la respuesta de la api
           this.mdl_correo = '';
           this.mdl_contrasena = '';
           this.mdl_confirmarContrasena = '';
           this.botonDeshabilitado = false;
-        } else {
+          this.verContrasena = false;
+          this.verConfirmarContrasena = false;
+        } else if (json.status == 'success') { //validacion correcta
           this.mostrarToast(json.message, 'success', 1500); //mensaje parametrizado en la respuesta de la api
           this.spinnerRecarga = true;
 
@@ -134,10 +135,10 @@ export class CrearUsuarioPage implements OnInit {
             this.spinnerRecarga = false;
           }, 2000);
         }
+      }
 
-        this.spinnerVisible = false;
-      }, 1000); //carga de 1 segundo antes de arrojar el toast
-    }
+      this.spinnerVisible = false;
+    }, 1000);
   }
 
   //contraseña visible
