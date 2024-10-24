@@ -120,11 +120,11 @@ export class DbService {
   }
 
   //eliminar me gusta
-  async eliminarMeGusta(usuario: string) {
+  async eliminarMeGusta(usuario: string, sede: string) {
     await this.abrirDB();
 
     try {
-      await this.dbInstancia?.executeSql('DELETE FROM ME_GUSTA WHERE USUARIO = ?', [usuario]);
+      await this.dbInstancia?.executeSql('DELETE FROM ME_GUSTA WHERE USUARIO = ?', [usuario, sede]);
       console.log('DGZ: ME GUSTA DEL USUARIO ' + usuario + ' BORRADO OK');
     } catch (e) {
       console.log('DGZ: ' + JSON.stringify(e));

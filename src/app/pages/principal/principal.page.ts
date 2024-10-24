@@ -215,7 +215,7 @@ export class PrincipalPage implements OnInit {
 
   //funcion para eliminar me gusta
   async eliminarMeGusta () {
-    await this.db.eliminarMeGusta(this.correo);
+    await this.db.eliminarMeGusta(this.correo, this.sedeSeleccionada.nombre);
   }
 
   //funcion para el boton me gusta por sede
