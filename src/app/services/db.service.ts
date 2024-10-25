@@ -124,7 +124,7 @@ export class DbService {
     await this.abrirDB();
 
     try {
-      await this.dbInstancia?.executeSql('DELETE FROM ME_GUSTA WHERE USUARIO = ?', [usuario, sede]);
+      await this.dbInstancia?.executeSql('DELETE FROM ME_GUSTA WHERE USUARIO = ? AND SEDE = ?', [usuario, sede]);
       console.log('DGZ: ME GUSTA DEL USUARIO ' + usuario + ' BORRADO OK');
     } catch (e) {
       console.log('DGZ: ' + JSON.stringify(e));
